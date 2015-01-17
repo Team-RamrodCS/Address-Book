@@ -25,6 +25,17 @@ public class AddressBook {
 		entries.add(entry);
 	}
 	
+	
+	/**
+	 * Gets a list of all the entries added to the address book.
+	 * 
+	 * @return an array list of type DataEntry.
+	 */
+	public ArrayList<DataEntry> getEntries()
+	{
+		return entries;
+	}
+	
 	// TODO Add a way to get entries through some parameters
 
 }

@@ -14,7 +14,8 @@ import java.util.Map;
  */
 public class DataEntry {
 
-	private Map<String, String> fields = new HashMap<String, String>(); // TODO look into other types of maps for more efficient sorting
+	private Map<String, String> fields = new HashMap<String, String>(); 
+	// TODO look into other types of maps for more efficient sorting
 
 	/**
 	 * Returns the value of a field in this entry.
