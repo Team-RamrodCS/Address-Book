@@ -2,6 +2,7 @@ package cis.ramrodcs.addressbook;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Stores a Map of strings which represent the field values associated with entries into an Address Book
@@ -35,5 +36,8 @@ public class DataEntry {
 	public void addField(String key, String value) {
 		fields.put(key, value);
 	}
-
+	
+	public Map<String,String> getEntries() {
+		return fields;
+	}
 }
