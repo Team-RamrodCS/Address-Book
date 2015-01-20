@@ -30,6 +30,7 @@ public class AddressBook {
 	final static String DEFAULT = WORKINGDIR + "/io/out.txt";
 	
 	private ArrayList<DataEntry> entries = new ArrayList<DataEntry>();
+	private String saveFile = new String("");
 	
 	/**
 	 *  Basic constructor
@@ -39,7 +40,7 @@ public class AddressBook {
 	}
 	
 	/**
-	 *  Overloaded constructor for building an address book from a file path
+	 *  Overloaded constructor for building an address book from file path
 	 *  
 	 * @param fileStr
 	 * @throws IOException
@@ -68,6 +69,20 @@ public class AddressBook {
 		return entries;
 	}
 	
+	/**
+	 *  Get the string path to the address book's save file
+	 * @return the string path to the save file
+	 */
+	public String getSave() {
+		return saveFile;
+	}
+	
+	/*
+	 *  Set the string path for the address book's save file
+	 */
+	public void setSave(String fileStr) {
+		saveFile = fileStr;
+	}
 	/**
 	 * Load contents of the address book into an array list.
 	 * 
@@ -133,24 +148,27 @@ public class AddressBook {
 	}
 	
 	/**
-	 *  Write contents of address book to DEFAULT? text file
-	 *  TODO: Implement configuration file for maintaining DEFAULT
-	 *  	  Possible FIXME
+	 *  Check for valid save file. If it exists, write contents of address book to said file 
 	 *  
 	 * @throws IOException
 	 */
 	public void saveFile() throws IOException {
-		Path path = null;
-		try {
-			path = Paths.get(DEFAULT);
+		if (getSave().equals("")) {
+			System.out.println("This address book has no valid save file");
 		}
-		catch (Exception e) {
-			if (e instanceof IOException) {
-				System.out.println("There is no file at that location");
+		else {
+			Path path = null;
+			try {
+				path = Paths.get(saveFile);
 			}
+			catch (Exception e) {
+				if (e instanceof IOException) {
+					System.out.println("There is no file at that location");
+				}
+			}
+			ArrayList<String> lst = toStringArray();
+			Files.write(path,lst,ENCODING);
 		}
-		ArrayList<String> lst = toStringArray();
-		Files.write(path,lst,ENCODING);
 	}
 	
 	/**
@@ -172,6 +190,7 @@ public class AddressBook {
 		}
 		ArrayList<String> lst = toStringArray();
 		Files.write(path, lst, ENCODING);
+		setSave(fileStr);
 	}
 
 }
