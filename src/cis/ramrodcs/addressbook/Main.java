@@ -2,13 +2,32 @@ package cis.ramrodcs.addressbook;
 
 import java.util.*;
 
+import cis.ramrodcs.addressbook.interfaces.*;
+
 public class Main {
+	private static ABInterface abInterface;
+
 	public static void main( String args[] ) 
 	{
+		System.out.println(Arrays.toString(args));
+		if (Arrays.toString(args).equals("[-cli]"))
+		{
+			abInterface = new CLI();
+		}
+		
+		else
+		{
+			abInterface = new GUI();
+		}
+		
+		abInterface.start();
+		/*
 		System.out.println("Welcome to your address book!  Please input the number of the operation you'd like to perform: ");
 		AddressBook book = new AddressBook();
 		Scanner scan = new Scanner(System.in);
 		boolean done = false;
+		
+		System.out.println(Arrays.toString(args));
 		
 		while (done == false)
 		{
@@ -59,8 +78,8 @@ public class Main {
 						System.out.println("Phone number: " + contact.getField("Number"));
 					}
 				}
-				
-				if (found = false)
+
+				if (found == false)
 				{
 					System.out.println("Contact name was not found.");
 				}
@@ -89,7 +108,7 @@ public class Main {
 		}
 		
 		scan.close();
-		
+		*/
 		/*
 		AddressBook book = new AddressBook();
 		List<String> names = Arrays.asList("Jeremy", "Elliott", "Dylan", "Taylor", "Eric");

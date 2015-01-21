@@ -24,6 +24,7 @@ public class AddressBook {
 	public void addDataEntry(DataEntry entry) {
 		entries.add(entry);
 	}
+
 	
 	
 	/**
@@ -35,6 +36,8 @@ public class AddressBook {
 	{
 		return entries;
 	}
+
+	
 	
 	// TODO Add a way to get entries through some parameters
 
