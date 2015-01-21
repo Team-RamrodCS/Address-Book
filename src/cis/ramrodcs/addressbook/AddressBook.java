@@ -1,6 +1,7 @@
 package cis.ramrodcs.addressbook;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -70,19 +71,21 @@ public class AddressBook {
 	}
 	
 	/**
-	 *  Get the string path to the address book's save file
+	 * Get the string path to the address book's save file
+	 *  
 	 * @return the string path to the save file
 	 */
 	public String getSave() {
 		return saveFile;
 	}
 	
-	/*
-	 *  Set the string path for the address book's save file
+	/**
+	 * Set the string path for the address book's save file
 	 */
 	public void setSave(String fileStr) {
 		saveFile = fileStr;
 	}
+	
 	/**
 	 * Load contents of the address book into an array list.
 	 * 
@@ -101,23 +104,17 @@ public class AddressBook {
 		return lines;
 	}
 	
-	// TODO Add a way to get entries through some parameters
-	
 	/**
-	 *  Load text file into a new address book
+	 * Load text file into a new address book
+	 *  
 	 * @param fileStr
 	 * @throws IOException
 	 */
-	public void loadFile(String fileStr) throws IOException {
+	public void loadFile(String fileStr) throws FileNotFoundException {
 		/* Load contents of text file into fresh AddressBook */
-		File file = null;
-		try {
-			file = new File(fileStr);
-		}
-		catch (Exception e) {
-			if (e instanceof IOException) {
-				System.out.println("File does not exist.");
-			}
+		File file = new File(fileStr);
+		if(!file.exists()) {
+			throw new FileNotFoundException("File: '" + fileStr + "' does not exist.");
 		}
 		Scanner scanner = new Scanner(file);
 		
@@ -148,48 +145,34 @@ public class AddressBook {
 	}
 	
 	/**
-	 *  Check for valid save file. If it exists, write contents of address book to said file 
+	 * Check for valid save file. If it exists, write contents of address book to said file 
 	 *  
 	 * @throws IOException
 	 */
-	public void saveFile() throws IOException {
+	public void saveFile() throws FileNotFoundException {
 		if (getSave().equals("")) {
-			System.out.println("This address book has no valid save file");
+			throw new FileNotFoundException("This address book has no valid save file.");
 		}
 		else {
-			Path path = null;
-			try {
-				path = Paths.get(saveFile);
-			}
-			catch (Exception e) {
-				if (e instanceof IOException) {
-					System.out.println("There is no file at that location");
-				}
-			}
-			ArrayList<String> lst = toStringArray();
-			Files.write(path,lst,ENCODING);
+			saveFile(getSave());
 		}
 	}
 	
 	/**
-	 *  Write contents of address book to file
-	 *  TODO: If file does not exist, prompt to create/save to new file 
+	 * Write contents of address book to file
+	 * TODO: If file does not exist, prompt to create/save to new file 
 	 *  
 	 * @param fileStr
 	 * @throws IOException
 	 */
-	public void saveFile(String fileStr) throws IOException {
-		Path path = null;
-		try {
-			path = Paths.get(fileStr);
-		}
-		catch (Exception e) {
-			if (e instanceof IOException) {
-				System.out.println("There is no file at that location");
-			}
-		}
+	public void saveFile(String fileStr) {
+		Path path = Paths.get(fileStr);
 		ArrayList<String> lst = toStringArray();
-		Files.write(path, lst, ENCODING);
+		try {
+			Files.write(path, lst, ENCODING);
+		} catch (IOException e) {
+			System.out.println("Could not save Address Book to file: " + fileStr);
+		}
 		setSave(fileStr);
 	}
 
