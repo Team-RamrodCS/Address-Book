@@ -58,6 +58,7 @@ public class AddressBook {
 	public void addDataEntry(DataEntry entry) {
 		entries.add(entry);
 	}
+
 	
 	
 	/**
@@ -69,6 +70,8 @@ public class AddressBook {
 	{
 		return entries;
 	}
+
+	
 	
 	/**
 	 * Get the string path to the address book's save file
