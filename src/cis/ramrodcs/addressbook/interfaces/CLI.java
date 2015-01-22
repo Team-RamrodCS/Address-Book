@@ -1,5 +1,6 @@
 package cis.ramrodcs.addressbook.interfaces;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import cis.ramrodcs.addressbook.AddressBook;
@@ -28,14 +29,14 @@ public class CLI implements ABInterface
 		Scanner scan = new Scanner(System.in);
 		boolean done = false;
 		
-		//System.out.println(Arrays.toString(args));
-		
 		while (done == false)
 		{
 			System.out.println("1.  Add an address");
 			System.out.println("2.  View a current address");
 			System.out.println("3.  View all addresses");
-			System.out.println("4.  Quit the program");
+			System.out.println("4.  Save book");
+			System.out.println("5.  Load book");
+			System.out.println("6.  Quit the program");
 			
 			String option = scan.nextLine();
 			
@@ -98,12 +99,34 @@ public class CLI implements ABInterface
 					System.out.println("");
 					
 				}
+			} else if (option.equals("4")) {
+				System.out.println("What file do you wish to save to?");
+				String file = scan.nextLine();
+				System.out.println("Saving file to: " + file);
+				book.saveFile(file);
+				System.out.println("Saved file to: " + file);
+			} else if (option.equals("5")) {
+				System.out.println("Please input the path to the book to load.");
+				String file = scan.nextLine();
+				System.out.println("Loading address bok from: " + file);
+				book = new AddressBook();
+				boolean loaded = true;
+				try {
+					book.loadFile(file);
+				} catch (FileNotFoundException e) {
+					System.out.println("Could not find file at: " + file);
+					loaded = false;
+				}
+				if(loaded)
+					System.out.println("Loaded address bok from: " + file);
+			} else if (option.equals("6")) {
+				done = true;
+				System.out.println("Thanks for participating!");
 			}
 			
 			else 
 			{
-				done = true;
-				System.out.println("Thanks for participating!");
+				System.out.println("Sorry, we didn't understand that option.");
 			}	
 		}
 		scan.close();
