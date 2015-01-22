@@ -9,16 +9,7 @@ public class Main {
 
 	public static void main( String args[] ) 
 	{
-		if (Arrays.toString(args).equals("[-cli]"))
-		{
-			abInterface = new CLI();
-		}
-		
-		else
-		{
-			abInterface = new GUI();
-		}
-		
+		abInterface = new CLI();
 		abInterface.start();
 	}
 }
