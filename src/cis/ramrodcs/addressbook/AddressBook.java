@@ -18,7 +18,6 @@ import java.util.Scanner;
  * Stores lists of entries to use as an Address Book.
  * 
  * @author eewing
- * @date Jan. 12, 2015
  * 
  * @see DataEntry
  *
@@ -43,11 +42,14 @@ public class AddressBook {
 	/**
 	 *  Overloaded constructor for building an address book from file path
 	 *  
-	 * @param fileStr
-	 * @throws IOException
+	 * @param fileStr the default file to load from for this Address Book.
 	 */
-	public AddressBook (String fileStr) throws IOException {
-		loadFile(fileStr);
+	public AddressBook (String fileStr){
+		try {
+			loadFile(fileStr);
+		} catch (FileNotFoundException e) {
+			System.out.println("Sorry, the file at " + fileStr + " does not exist.");
+		}
 	}
 	
 	/**
@@ -84,6 +86,8 @@ public class AddressBook {
 	
 	/**
 	 * Set the string path for the address book's save file
+	 * 
+	 * @param fileStr the file to set as the default save location
 	 */
 	public void setSave(String fileStr) {
 		saveFile = fileStr;
@@ -110,8 +114,8 @@ public class AddressBook {
 	/**
 	 * Load text file into a new address book
 	 *  
-	 * @param fileStr
-	 * @throws IOException
+	 * @param fileStr the file to load from.
+	 * @throws FileNotFoundException if <code>fileStr</code> cannot be found on the filesystem.
 	 */
 	public void loadFile(String fileStr) throws FileNotFoundException {
 		/* Load contents of text file into fresh AddressBook */
@@ -150,7 +154,7 @@ public class AddressBook {
 	/**
 	 * Check for valid save file. If it exists, write contents of address book to said file 
 	 *  
-	 * @throws IOException
+	 * @throws FileNotFoundException if the address doesn't have a default save file stored.
 	 */
 	public void saveFile() throws FileNotFoundException {
 		if (getSave().equals("")) {
@@ -165,8 +169,7 @@ public class AddressBook {
 	 * Write contents of address book to file
 	 * TODO: If file does not exist, prompt to create/save to new file 
 	 *  
-	 * @param fileStr
-	 * @throws IOException
+	 * @param fileStr the file to save to
 	 */
 	public void saveFile(String fileStr) {
 		Path path = Paths.get(fileStr);

@@ -8,11 +8,10 @@ import cis.ramrodcs.addressbook.DataEntry;
 
 
 /**
+ * Class that controls the CLI and its associated functions.
  * 
  * @author JeremyLipps
- * @date Jan. 19, 2015
  * 
- * Class that controls the CLI and its associated functions.
  * @see ABInterface
  * 
  */

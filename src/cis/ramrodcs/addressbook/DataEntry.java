@@ -8,7 +8,6 @@ import java.util.Set;
  * Stores a Map of strings which represent the field values associated with entries into an Address Book
  * 
  * @author eewing
- * @date Jan. 13, 2015
  * 
  * @see AddressBook
  *
@@ -20,6 +19,8 @@ public class DataEntry {
 
 	/**
 	 * Returns the value of a field in this entry.
+	 * 
+	 * @param key the field to retrieve the value of.
 	 * 
 	 * @return the value of the field given by <code>key</code>. If this DataEntry does not contain
 	 * a field named <code>key</code>, then this function returns null.
