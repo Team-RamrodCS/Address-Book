@@ -66,7 +66,7 @@ public class ViewAddress extends JPanel {
     });
 
     JFrame f = new JFrame("Text Form Example");
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     f.getContentPane().add(form, BorderLayout.NORTH);
     JPanel p = new JPanel();
     p.add(submit);

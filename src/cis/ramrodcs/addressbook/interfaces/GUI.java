@@ -31,7 +31,7 @@ public class GUI implements ABInterface
 		AddressBook book = new AddressBook();
 		
 	    JFrame frame = new JFrame("Address Book");
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    JButton addButton = new JButton("Add Address");
 	    JButton view_oneButton = new JButton("View An Address");
 	    JButton view_allButton = new JButton("View All Addresses");
@@ -40,7 +40,7 @@ public class GUI implements ABInterface
 	    //Where the GUI is created:
 	    JMenuBar menuBar;
 	    JMenu menu, newSubmenu;
-	    JMenuItem addAddress, viewAddress, viewAddresses, quit, menuItem;
+	    JMenuItem newAddress, newBook, newField, openBook, importBook, exportBook, viewAddress, viewAddresses, saveBook, quitBook;
 
 	    //Create the menu bar.
 	    menuBar = new JMenuBar();
@@ -53,38 +53,47 @@ public class GUI implements ABInterface
 	    menuBar.add(menu);
 
 	    //a group of JMenuItems
-	    // A submenu for New
 	    
+	    // A submenu for New 
 	    newSubmenu = new JMenu("New");
 
-	    menuItem = new JMenuItem("An item in the submenu");
-	    newSubmenu.add(menuItem);
+	    newAddress = new JMenuItem("New Address");
+	    newSubmenu.add(newAddress);
 
-	    menuItem = new JMenuItem("Another item");
-	    newSubmenu.add(menuItem);
+	    newBook = new JMenuItem("New Address Book");
+	    newSubmenu.add(newBook);
+	    
+	    newField = new JMenuItem("New User Field");
+	    newSubmenu.add(newField);
+	    
 	    menu.add(newSubmenu);
-	    
-	    menu.addSeparator();
-	    
-	    addAddress = new JMenuItem("Add an address",
-	                             KeyEvent.VK_T);
-	    addAddress.setAccelerator(KeyStroke.getKeyStroke(
-	            KeyEvent.VK_1, ActionEvent.ALT_MASK));
-	    menu.add(addAddress);
+	    	    
+	    openBook = new JMenuItem("Open");
+	    menu.add(openBook);
 
 	    menu.addSeparator();
+	    
+	    importBook = new JMenuItem("Import");
+	    menu.add(importBook);
+	    
+	    exportBook = new JMenuItem("Export");
+	    menu.add(exportBook);
+	    
+	    menu.addSeparator();
+	    
 	    viewAddress = new JMenuItem("View an address");
 	    menu.add(viewAddress);
 
 	    viewAddresses = new JMenuItem("View all addresses");
 	    menu.add(viewAddresses);
-
 	    
-	    
-	    //Quit button
 	    menu.addSeparator();
-	    quit = new JMenuItem("Quit");
-	    menu.add(quit);
+	    
+	    saveBook = new JMenuItem("Save");
+	    menu.add(saveBook);
+	    
+	    quitBook = new JMenuItem("Quit");
+	    menu.add(quitBook);
 
 	    //Build second menu in the menu bar.
 	    menu = new JMenu("Edit");
@@ -113,7 +122,6 @@ public class GUI implements ABInterface
 		    	else if (e.getSource() == view_allButton)
 		    	{
 		    		System.out.println("View all addresses.");
-		    		
 		    	}
 		    	
 		    	else if (e.getSource() == quitButton)
@@ -121,10 +129,35 @@ public class GUI implements ABInterface
 		    		System.out.println("Quit program.");
 		    	}
 		    	
-		    	else if (e.getSource() == addAddress)
+		    	else if (e.getSource() == newAddress)
 		    	{
 		    		//addFrame();
 		    		AddAddress.main(null);
+		    	}
+		    	
+		    	else if (e.getSource() == newBook)
+		    	{
+		    		System.out.println("New book.");
+		    	}
+		    	
+		    	else if (e.getSource() == newField)
+		    	{
+		    		System.out.println("New field.");
+		    	}
+		    	
+		    	else if (e.getSource() == openBook)
+		    	{
+		    		System.out.println("Open book.");
+		    	}
+		    	
+		    	else if (e.getSource() == importBook)
+		    	{
+		    		System.out.println("Import book.");
+		    	}
+		    	
+		    	else if (e.getSource() == exportBook)
+		    	{
+		    		System.out.println("Export book.");
 		    	}
 		    	
 		    	else if (e.getSource() == viewAddress)
@@ -167,7 +200,12 @@ public class GUI implements ABInterface
 					}
 		    	}
 		    	
-		    	else if (e.getSource() == quit)
+		    	else if (e.getSource() == saveBook)
+		    	{
+		    		System.out.println("Save book.");
+		    	}
+		    	
+		    	else if (e.getSource() == quitBook)
 		    	{
 		    		System.out.println("Menu quit.");
 		    	}
@@ -180,10 +218,16 @@ public class GUI implements ABInterface
 	    view_allButton.addActionListener(actionListener);
 	    quitButton.addActionListener(actionListener);
 	    
-	    addAddress.addActionListener(actionListener);
+	    newAddress.addActionListener(actionListener);
+	    newBook.addActionListener(actionListener);
+	    newField.addActionListener(actionListener);
+	    openBook.addActionListener(actionListener);
+	    importBook.addActionListener(actionListener);
+	    exportBook.addActionListener(actionListener);
 	    viewAddress.addActionListener(actionListener);
 	    viewAddresses.addActionListener(actionListener);
-	    quit.addActionListener(actionListener);
+	    saveBook.addActionListener(actionListener);
+	    quitBook.addActionListener(actionListener);
 	    
 	    // Customize main JPanel
 	    JPanel mainPanel = new JPanel();
