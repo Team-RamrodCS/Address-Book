@@ -1,4 +1,4 @@
-package cis.ramrodcs.addressbook.io;
+package cis.ramrodcs.addressbook.io.writers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.DataEntry;
-import cis.ramrodcs.addressbook.io.writers.FileWriter;
+import cis.ramrodcs.addressbook.io.FileWriter;
 
 /**
  * Writes address books using the <code>Tab Separated Values</code> File format.

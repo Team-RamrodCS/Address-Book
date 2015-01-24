@@ -1,4 +1,4 @@
-package cis.ramrodcs.addressbook.io.writers;
+package cis.ramrodcs.addressbook.io;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

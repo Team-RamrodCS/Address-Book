@@ -1,6 +1,5 @@
 package cis.ramrodcs.addressbook.io.readers;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 

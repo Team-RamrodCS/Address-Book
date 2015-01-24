@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.DataEntry;
+import cis.ramrodcs.addressbook.io.FileWriter;
 
 /**
  * Writes address books using the <code>Hit Me Up!</code> File format.
