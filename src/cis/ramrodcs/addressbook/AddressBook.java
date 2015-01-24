@@ -13,6 +13,9 @@ import cis.ramrodcs.addressbook.io.readers.UPSReader;
 import cis.ramrodcs.addressbook.io.writers.HMUWriter;
 import cis.ramrodcs.addressbook.io.writers.TSVWriter;
 import cis.ramrodcs.addressbook.io.writers.UPSWriter;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Stores lists of entries to use as an Address Book.
@@ -31,6 +34,7 @@ public class AddressBook {
 	
 	
 	private ArrayList<DataEntry> entries = new ArrayList<DataEntry>();
+	private ArrayList<DataEntry> searchResults = new ArrayList<DataEntry>();
 	private String saveFile = new String("");
 	
 	/**
@@ -89,6 +93,16 @@ public class AddressBook {
 		saveFile = fileStr;
 	}
 	
+	
+	public void printAllEntries() {
+		for (DataEntry contact : this.getEntries())
+		{
+			System.out.println("Name: " + contact.getField("Name"));
+			System.out.println("State: " + contact.getField("State"));
+			System.out.println("Phone number: " + contact.getField("Number"));
+			System.out.println("");
+		}
+	}
 	/**
 	 * Load text file into a new address book
 	 *  
@@ -165,4 +179,19 @@ public class AddressBook {
 		//TODO Instead of assuming HMU file type, save loaded file type when loading file.
 	}
 
+	
+	public void sortByField(String fileStr) {
+		entries.sort(new DataEntryComparator(fileStr));
+	}
+	
+	public void search(String str) {
+		for (DataEntry entry : entries) {
+			Map<String,String> map = entry.getEntries();
+			Collection<String> coll = map.values();
+			
+			if (coll.contains(str)) {
+				searchResults.add(entry);
+			}
+		}
+	}
 }
