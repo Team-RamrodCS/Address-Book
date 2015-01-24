@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -29,6 +30,7 @@ public class AddressBook {
 	final static String DEFAULT = WORKINGDIR + "/io/out.txt";
 	
 	private ArrayList<DataEntry> entries = new ArrayList<DataEntry>();
+	private ArrayList<DataEntry> searchResults = new ArrayList<DataEntry>();
 	private String saveFile = new String("");
 	
 	/**
@@ -87,6 +89,16 @@ public class AddressBook {
 		saveFile = fileStr;
 	}
 	
+	
+	public void printAllEntries() {
+		for (DataEntry contact : this.getEntries())
+		{
+			System.out.println("Name: " + contact.getField("Name"));
+			System.out.println("State: " + contact.getField("State"));
+			System.out.println("Phone number: " + contact.getField("Number"));
+			System.out.println("");
+		}
+	}
 	/**
 	 * Load contents of the address book into an array list.
 	 * 
@@ -180,5 +192,16 @@ public class AddressBook {
 	
 	public void sortByField(String fileStr) {
 		entries.sort(new DataEntryComparator(fileStr));
+	}
+	
+	public void search(String str) {
+		for (DataEntry entry : entries) {
+			Map<String,String> map = entry.getEntries();
+			Collection<String> coll = map.values();
+			
+			if (coll.contains(str)) {
+				searchResults.add(entry);
+			}
+		}
 	}
 }

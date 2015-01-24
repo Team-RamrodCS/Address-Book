@@ -3,9 +3,15 @@ package cis.ramrodcs.addressbook.interfaces;
 import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.awt.Component;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
+
+import cis.ramrodcs.addressbook.AddressBook;
 
 /**
  * 
@@ -31,10 +37,13 @@ public class GUI implements ABInterface
 	    JButton view_allButton = new JButton("View All Addresses");
 	    JButton quitButton = new JButton("Quit Program");
 	    
+	    // Create new AddressBook
+	    AddressBook book = new AddressBook();
+	    
 	    //Where the GUI is created:
 	    JMenuBar menuBar;
 	    JMenu menu, submenu;
-	    JMenuItem addAddress, viewAddress, viewAddresses, quit, menuItem;
+	    JMenuItem addAddress, viewAddress, viewAddresses, load, quit, menuItem;
 
 	    //Create the menu bar.
 	    menuBar = new JMenuBar();
@@ -47,6 +56,9 @@ public class GUI implements ABInterface
 	    menuBar.add(menu);
 
 	    //a group of JMenuItems
+	    load = new JMenuItem("Load file");
+	    menu.add(load);
+	    
 	    addAddress = new JMenuItem("Add an address",
 	                             KeyEvent.VK_T);
 	    addAddress.setAccelerator(KeyStroke.getKeyStroke(
@@ -59,6 +71,7 @@ public class GUI implements ABInterface
 
 	    viewAddresses = new JMenuItem("View all addresses");
 	    menu.add(viewAddresses);
+	   
 
 	    //a submenu
 	    menu.addSeparator();
@@ -102,11 +115,18 @@ public class GUI implements ABInterface
 		    	else if (e.getSource() == view_allButton)
 		    	{
 		    		System.out.println("View all addresses.");
+		    		viewAll(book);
 		    	}
 		    	
 		    	else if (e.getSource() == quitButton)
 		    	{
 		    		System.out.println("Quit program.");
+		    	}
+		    	
+		    	else if (e.getSource() == load)
+		    	{
+		    		System.out.println("load file");
+		    		loadFile(frame, book);
 		    	}
 		    	
 		    	else if (e.getSource() == addAddress)
@@ -122,6 +142,7 @@ public class GUI implements ABInterface
 		    	else if (e.getSource() == viewAddresses)
 		    	{
 		    		System.out.println("Menu view addresses.");
+		    		viewAll(book);
 		    	}
 		    	
 		    	else if (e.getSource() == quit)
@@ -137,6 +158,7 @@ public class GUI implements ABInterface
 	    view_allButton.addActionListener(actionListener);
 	    quitButton.addActionListener(actionListener);
 	    
+	    load.addActionListener(actionListener);
 	    addAddress.addActionListener(actionListener);
 	    viewAddress.addActionListener(actionListener);
 	    viewAddresses.addActionListener(actionListener);
@@ -191,5 +213,35 @@ public class GUI implements ABInterface
 		frame.setLocationByPlatform(true);
         frame.setVisible(true);
         frame.setResizable(false);
+	}
+	
+	
+	void loadFile(JFrame jf, AddressBook bk) {
+		final JFileChooser fc = new JFileChooser();
+		File open = null;
+		String path = null;
+		
+		fc.showOpenDialog(jf);
+		open = fc.getSelectedFile();
+		
+		try {
+			path = open.getCanonicalPath();
+		}
+		catch (IOException ex) {
+			System.out.println( "Invalid file: " + ex.getMessage());
+		}
+		
+		System.out.println("path : " + path);
+		try {
+			bk.loadFile(path);
+		}
+		catch (FileNotFoundException ex) {
+			System.out.println(" File not found: " + ex.getMessage());
+		}
+	}
+	
+	void viewAll(AddressBook bk) {
+		System.out.println("INSIDE VIEWALL");
+		bk.printAllEntries();
 	}
 }
