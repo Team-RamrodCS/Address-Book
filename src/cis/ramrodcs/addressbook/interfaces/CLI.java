@@ -33,7 +33,7 @@ public class CLI implements ABInterface
 		while (done == false)
 		{
 			System.out.println("1.  Add an address");
-			System.out.println("2.  View a current address");
+			System.out.println("2.  View an existing address");
 			System.out.println("3.  View all addresses");
 			System.out.println("4.  Save book");
 			System.out.println("5.  Load book");
