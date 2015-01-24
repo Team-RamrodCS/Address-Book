@@ -7,7 +7,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import cis.ramrodcs.addressbook.AddressBook;
+import cis.ramrodcs.addressbook.DataEntry;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
@@ -30,20 +36,24 @@ public class GUI implements ABInterface
 	@Override
 	public void start() 
 	{
+		
 	    JFrame frame = new JFrame("Address Book");
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    JButton addButton = new JButton("Add Address");
 	    JButton view_oneButton = new JButton("View An Address");
 	    JButton view_allButton = new JButton("View All Addresses");
 	    JButton quitButton = new JButton("Quit Program");
+	    JButton searchButton = new JButton("Search");
+	    
+	    JTextField searchField = new JTextField("Search");
 	    
 	    // Create new AddressBook
 	    AddressBook book = new AddressBook();
 	    
 	    //Where the GUI is created:
 	    JMenuBar menuBar;
-	    JMenu menu, submenu;
-	    JMenuItem addAddress, viewAddress, viewAddresses, load, quit, menuItem;
+	    JMenu menu, newSubmenu;
+	    JMenuItem newAddress, newBook, newField, openBook, importBook, exportBook, viewAddress, viewAddresses, saveBook, quitBook;
 
 	    //Create the menu bar.
 	    menuBar = new JMenuBar();
@@ -54,40 +64,47 @@ public class GUI implements ABInterface
 	    menu.getAccessibleContext().setAccessibleDescription(
 	            "The only menu in this program that has menu items");
 	    menuBar.add(menu);
-
-	    //a group of JMenuItems
-	    load = new JMenuItem("Load file");
-	    menu.add(load);
 	    
-	    addAddress = new JMenuItem("Add an address",
-	                             KeyEvent.VK_T);
-	    addAddress.setAccelerator(KeyStroke.getKeyStroke(
-	            KeyEvent.VK_1, ActionEvent.ALT_MASK));
-	    menu.add(addAddress);
+	    // A submenu for New 
+	    newSubmenu = new JMenu("New");
+
+	    newAddress = new JMenuItem("New Address");
+	    newSubmenu.add(newAddress);
+
+	    newBook = new JMenuItem("New Address Book");
+	    newSubmenu.add(newBook);
+	    
+	    newField = new JMenuItem("New User Field");
+	    newSubmenu.add(newField);
+	    
+	    menu.add(newSubmenu);
+	    	    
+	    openBook = new JMenuItem("Open");
+	    menu.add(openBook);
 
 	    menu.addSeparator();
+	    
+	    importBook = new JMenuItem("Import");
+	    menu.add(importBook);
+	    
+	    exportBook = new JMenuItem("Export");
+	    menu.add(exportBook);
+	    
+	    menu.addSeparator();
+	    
 	    viewAddress = new JMenuItem("View an address");
 	    menu.add(viewAddress);
 
 	    viewAddresses = new JMenuItem("View all addresses");
 	    menu.add(viewAddresses);
-	   
-
-	    //a submenu
-	    menu.addSeparator();
-	    submenu = new JMenu("A submenu");
-
-	    menuItem = new JMenuItem("An item in the submenu");
-	    submenu.add(menuItem);
-
-	    menuItem = new JMenuItem("Another item");
-	    submenu.add(menuItem);
-	    menu.add(submenu);
 	    
-	    //Quit button
 	    menu.addSeparator();
-	    quit = new JMenuItem("Quit");
-	    menu.add(quit);
+	    
+	    saveBook = new JMenuItem("Save");
+	    menu.add(saveBook);
+	    
+	    quitBook = new JMenuItem("Quit");
+	    menu.add(quitBook);
 
 	    //Build second menu in the menu bar.
 	    menu = new JMenu("Edit");
@@ -95,6 +112,11 @@ public class GUI implements ABInterface
 	    menu.getAccessibleContext().setAccessibleDescription(
 	            "This menu does nothing");
 	    menuBar.add(menu);
+	    
+	    //Build a third menu for search field.
+	    menuBar.add(searchButton);
+	    menuBar.add(searchField);
+	    
 
 	    frame.setJMenuBar(menuBar);
 	    
@@ -110,6 +132,7 @@ public class GUI implements ABInterface
 		    	else if (e.getSource() == view_oneButton)
 		    	{
 		    		System.out.println("View an address.");
+		    		ViewAddress.main(null);
 		    	}
 		    	
 		    	else if (e.getSource() == view_allButton)
@@ -123,31 +146,91 @@ public class GUI implements ABInterface
 		    		System.out.println("Quit program.");
 		    	}
 		    	
-		    	else if (e.getSource() == load)
+		    	else if (e.getSource() == openBook)
 		    	{
 		    		System.out.println("load file");
 		    		loadFile(frame, book);
 		    	}
 		    	
-		    	else if (e.getSource() == addAddress)
+		    	else if (e.getSource() == newAddress)
 		    	{
-		    		addFrame();
+		    		//addFrame();
+		    		AddAddress.main(null);
+		    	}
+		    	
+		    	else if (e.getSource() == newBook)
+		    	{
+		    		System.out.println("New book.");
+		    	}
+		    	
+		    	else if (e.getSource() == newField)
+		    	{
+		    		System.out.println("New field.");
+		    	}
+		    	
+		    	else if (e.getSource() == openBook)
+		    	{
+		    		System.out.println("Open book.");
+		    	}
+		    	
+		    	else if (e.getSource() == importBook)
+		    	{
+		    		System.out.println("Import book.");
+		    	}
+		    	
+		    	else if (e.getSource() == exportBook)
+		    	{
+		    		System.out.println("Export book.");
 		    	}
 		    	
 		    	else if (e.getSource() == viewAddress)
 		    	{
-		    		System.out.println("Menu view address.");
+		    		System.out.println("You've chosen to retrieve an an address.  Please input the full name of the person you'd like to see.");
+					addFrame();
+		    		/*String nameRequest = scan.nextLine();
+					
+					
+					boolean found = false;
+					
+					for (DataEntry contact : book.getEntries())
+					{
+						if (nameRequest.equals(contact.getField("Name")))
+						{
+							found = true;
+							System.out.println("Here's what we found:");
+							System.out.println("Name: " + contact.getField("Name"));
+							System.out.println("State: " + contact.getField("State"));
+							System.out.println("Phone number: " + contact.getField("Number"));
+						}
+					}
+
+					if (found == false)
+					{
+						System.out.println("Contact name was not found.");
+					}*/
 		    	}
 		    	
 		    	else if (e.getSource() == viewAddresses)
 		    	{
-		    		System.out.println("Menu view addresses.");
-		    		viewAll(book);
+		    		System.out.println("You've chosen to view all addresses, which are listed below.");
+					System.out.println("Number of current contacts: " + book.getEntries().size());
+					viewAll(book);
 		    	}
 		    	
-		    	else if (e.getSource() == quit)
+		    	else if (e.getSource() == saveBook)
+		    	{
+		    		System.out.println("Save book.");
+		    	}
+		    	
+		    	else if (e.getSource() == quitBook)
 		    	{
 		    		System.out.println("Menu quit.");
+		    	}
+		    	
+		    	else if (e.getSource() == searchButton)
+		    	{
+		    		String searched = searchField.getText();
+		    		System.out.println(searched);
 		    	}
 		    }
 	    };
@@ -157,23 +240,61 @@ public class GUI implements ABInterface
 	    view_oneButton.addActionListener(actionListener);
 	    view_allButton.addActionListener(actionListener);
 	    quitButton.addActionListener(actionListener);
+
 	    
-	    load.addActionListener(actionListener);
-	    addAddress.addActionListener(actionListener);
+	    newAddress.addActionListener(actionListener);
+	    newBook.addActionListener(actionListener);
+	    newField.addActionListener(actionListener);
+	    openBook.addActionListener(actionListener);
+	    importBook.addActionListener(actionListener);
+	    exportBook.addActionListener(actionListener);
 	    viewAddress.addActionListener(actionListener);
 	    viewAddresses.addActionListener(actionListener);
-	    quit.addActionListener(actionListener);
+	    saveBook.addActionListener(actionListener);
+	    quitBook.addActionListener(actionListener);
+	    searchButton.addActionListener(actionListener);
 	    
-	    // Customize JPanel
-	    JPanel panel = new JPanel();
-	    panel.add(addButton);
-	    panel.add(view_oneButton);
-	    panel.add(view_allButton);
-	    panel.add(quitButton);
-
-	    frame.add(panel);
+	    // Customize main JPanel
+	    JPanel mainPanel = new JPanel();
+	    
+	    mainPanel.setOpaque(true);
+	    mainPanel.setBackground(Color.black);
+	    //mainPanel.add(addButton);
+	    //mainPanel.add(view_oneButton);
+	    //mainPanel.add(view_allButton);
+	    //mainPanel.add(quitButton);
+	    String columns[] = {"Name", "City", "State", "ZIP"};
+	    String dataValues[][] = {
+	    {"Jeremy", "Eugene", "Oregon", "97403"},
+	    {"Dylan", "Coburg", "Washington", "99999"},
+	    {"Eric", "Dana", "California", "11111"},
+	    {"Elliott", "DC", "New York", "22222"}
+	    };
+	    
+	    JTable mainTable = new JTable(dataValues, columns);
+	    mainTable.setAutoCreateRowSorter(true);
+	    JScrollPane mainScrollpane = new JScrollPane(mainTable);
+	    mainPanel.add(mainScrollpane, BorderLayout.CENTER);
+	    
+	    
+	    // Customize side panel
+	    JPanel sidePanel = new JPanel();
+	    sidePanel.setOpaque(true);
+	    sidePanel.setBackground(Color.blue);
+	    
+	    // Customize bottom panel
+	    JPanel bottomPanel = new JPanel();
+	    bottomPanel.setOpaque(true);
+	    bottomPanel.setBackground(Color.red);
+	    
+	    // Add panels to the frame
+	    frame.add(mainPanel, BorderLayout.CENTER);
+	    frame.add(sidePanel, BorderLayout.WEST);
+	    frame.add(bottomPanel, BorderLayout.SOUTH);
 	    frame.setSize(300, 300);
+	    frame.setMinimumSize(new Dimension(300, 300));
 	    frame.setVisible(true);
+	    
 	}	
 	
 	/**
@@ -191,14 +312,17 @@ public class GUI implements ABInterface
 		JLabel numButton = new JLabel("Number");
 		JTextField numInput = new JTextField(20);
 		
+		GroupLayout layout = new GroupLayout(inputpanel);
+		
 		inputpanel.add(nameButton);
 		inputpanel.add(nameInput);
+		/*
 		inputpanel.add(zipButton);
 		inputpanel.add(zipInput);
 		inputpanel.add(numButton);
 		inputpanel.add(numInput);
+		*/
 		
-		GroupLayout layout = new GroupLayout(inputpanel);
 		inputpanel.setLayout(layout);
 		// Turn on automatically adding gaps between components
 	    layout.setAutoCreateGaps(true);
@@ -207,7 +331,6 @@ public class GUI implements ABInterface
 	    // the edge of the container and the container.
 	    layout.setAutoCreateContainerGaps(true);
 
-		
 		frame.add(inputpanel, layout);
 		frame.setSize(300, 300);
 		frame.setLocationByPlatform(true);
@@ -243,5 +366,10 @@ public class GUI implements ABInterface
 	void viewAll(AddressBook bk) {
 		System.out.println("INSIDE VIEWALL");
 		bk.printAllEntries();
+	}
+
+	public void tableLayout()
+	{
+		
 	}
 }
