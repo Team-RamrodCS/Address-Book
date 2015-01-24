@@ -15,6 +15,8 @@ import java.util.Set;
  */
 public class DataEntry {
 
+	public final static String defaultEntries[] = {"first name", "last name", "street address", "city", "state", "zip", "phone number"};
+
 	private Map<String, String> fields = new HashMap<String, String>(); 
 	// TODO look into other types of maps for more efficient sorting
 
@@ -25,7 +27,7 @@ public class DataEntry {
 	 * a field named <code>key</code>, then this function returns null.
 	 */
 	public String getField(String key) {
-		return fields.get(key);
+		return fields.get(key.toLowerCase());
 	}
 
 	/**
@@ -34,7 +36,10 @@ public class DataEntry {
 	 * @param value the value to set <code>field</code> to.
 	 */
 	public void addField(String key, String value) {
-		fields.put(key, value);
+		if(value.equals("") || value == null) {
+			return;
+		}
+		fields.put(key.toLowerCase(), value);
 	}
 	
 	public Map<String,String> getEntries() {

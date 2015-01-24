@@ -1,5 +1,0 @@
-"Number:5","State:az","Name:dylan",
-"Number:3","State:ca","Name:joe",
-"Number:4","State:or","Name:john",
-"Number:2","State:fl","Name:greg",
-"Number:1","State:ny","Name:chuck",

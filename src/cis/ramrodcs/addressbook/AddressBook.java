@@ -1,18 +1,18 @@
 package cis.ramrodcs.addressbook;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+
+import cis.ramrodcs.addressbook.io.FileReader;
+import cis.ramrodcs.addressbook.io.FileType;
+import cis.ramrodcs.addressbook.io.TSVWriter;
+import cis.ramrodcs.addressbook.io.readers.HMUReader;
+import cis.ramrodcs.addressbook.io.readers.TSVReader;
+import cis.ramrodcs.addressbook.io.readers.UPSReader;
+import cis.ramrodcs.addressbook.io.writers.FileWriter;
+import cis.ramrodcs.addressbook.io.writers.HMUWriter;
+import cis.ramrodcs.addressbook.io.writers.UPSWriter;
 
 /**
  * Stores lists of entries to use as an Address Book.
@@ -25,10 +25,10 @@ import java.util.Scanner;
  */
 
 public class AddressBook {
-	final static Charset ENCODING = StandardCharsets.UTF_8;
 	final static String WORKINGDIR = "src/cis/ramrodcs/addressbook";
 	final static String IN_FILE = WORKINGDIR + "/io/in.txt";
 	final static String DEFAULT = WORKINGDIR + "/io/out.txt";
+	
 	
 	private ArrayList<DataEntry> entries = new ArrayList<DataEntry>();
 	private String saveFile = new String("");
@@ -90,61 +90,30 @@ public class AddressBook {
 	}
 	
 	/**
-	 * Load contents of the address book into an array list.
-	 * 
-	 * @return an array list representation of the address book
-	 */
-	public ArrayList<String> toStringArray() {
-		ArrayList<String> lines = new ArrayList<String>();
-		for(DataEntry element: entries) {
-			Map<String,String> fieldVal = element.getEntries();
-			String line = new String();
-			for (String key : fieldVal.keySet()) {
-				line += "\"" + key + ":" + fieldVal.get(key) + "\",";
-			}
-			lines.add(line);
-		}
-		return lines;
-	}
-	
-	/**
 	 * Load text file into a new address book
 	 *  
 	 * @param fileStr
 	 * @throws IOException
 	 */
 	public void loadFile(String fileStr) throws FileNotFoundException {
-		/* Load contents of text file into fresh AddressBook */
-		File file = new File(fileStr);
-		if(!file.exists()) {
-			throw new FileNotFoundException("File: '" + fileStr + "' does not exist.");
+		loadFile(fileStr, FileType.HMU);
+	}
+	
+	public void loadFile(String fileStr, FileType type) throws FileNotFoundException {
+		FileReader reader = null;
+		switch(type) {
+		case TSV:
+			reader = new TSVReader(fileStr, this);
+			break;
+		case UPS:
+			reader = new UPSReader(fileStr, this);
+			break;
+		case HMU:
+		default:
+			reader = new HMUReader(fileStr, this);
+			break;
 		}
-		Scanner scanner = new Scanner(file);
-		
-		String[] pairs = {};
-		String[] piece = {};
-		
-		while(scanner.hasNextLine()) {
-			/* Parse each line and convert to DataEntry format; Add each entry
-			 * to the AddressBook */
-			DataEntry entry = new DataEntry();
-			String delim1 = "[,]";
-			String delim2 = "[:]";
-			String element = scanner.nextLine();
-			
-			if (element.equals("")) {
-				continue;
-			}
-			pairs = element.split(delim1);
-			for (int i = 0; i < pairs.length; i++) {
-				/* Replace quotations and split for name:val pieces */
-				String str = pairs[i].replace("\"", "");
-				piece = str.split(delim2);
-				entry.addField(piece[0], piece[1]);
-			}
-			this.addDataEntry(entry);
-		}
-		scanner.close();
+		reader.read();
 	}
 	
 	/**
@@ -153,12 +122,35 @@ public class AddressBook {
 	 * @throws IOException
 	 */
 	public void saveFile() throws FileNotFoundException {
+		saveFile(FileType.HMU);
+		//TODO Instead of assuming HMU file type, save loaded file type when loading file.
+	}
+	
+	public void saveFile(FileType type) throws FileNotFoundException{
 		if (getSave().equals("")) {
 			throw new FileNotFoundException("This address book has no valid save file.");
 		}
 		else {
-			saveFile(getSave());
+			saveFile(getSave(), type);
 		}
+	}
+	
+	public void saveFile(String fileStr, FileType type) {
+		FileWriter writer;
+		switch(type) {
+		case TSV:
+			writer = new TSVWriter(this);
+			break;
+		case UPS:
+			writer = new UPSWriter(this);
+			break;
+		case HMU:
+		default:
+			writer = new HMUWriter(this);
+			break;
+		}
+		writer.write(fileStr);
+		setSave(fileStr);
 	}
 	
 	/**
@@ -169,14 +161,8 @@ public class AddressBook {
 	 * @throws IOException
 	 */
 	public void saveFile(String fileStr) {
-		Path path = Paths.get(fileStr);
-		ArrayList<String> lst = toStringArray();
-		try {
-			Files.write(path, lst, ENCODING);
-		} catch (IOException e) {
-			System.out.println("Could not save Address Book to file: " + fileStr);
-		}
-		setSave(fileStr);
+		saveFile(fileStr, FileType.HMU);
+		//TODO Instead of assuming HMU file type, save loaded file type when loading file.
 	}
 
 }
