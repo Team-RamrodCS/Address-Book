@@ -1,15 +1,14 @@
 package cis.ramrodcs.addressbook.interfaces;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.*;
-import java.awt.Component;
-
-import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.DataEntry;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.*;
+import javax.swing.*;
+
 
 /**
  * 
@@ -36,6 +35,9 @@ public class GUI implements ABInterface
 	    JButton view_oneButton = new JButton("View An Address");
 	    JButton view_allButton = new JButton("View All Addresses");
 	    JButton quitButton = new JButton("Quit Program");
+	    JButton searchButton = new JButton("Search");
+	    
+	    JTextField searchField = new JTextField("Search");
 	    
 	    //Where the GUI is created:
 	    JMenuBar menuBar;
@@ -101,6 +103,11 @@ public class GUI implements ABInterface
 	    menu.getAccessibleContext().setAccessibleDescription(
 	            "This menu does nothing");
 	    menuBar.add(menu);
+	    
+	    //Build a third menu for search field.
+	    menuBar.add(searchButton);
+	    menuBar.add(searchField);
+	    
 
 	    frame.setJMenuBar(menuBar);
 	    
@@ -209,6 +216,12 @@ public class GUI implements ABInterface
 		    	{
 		    		System.out.println("Menu quit.");
 		    	}
+		    	
+		    	else if (e.getSource() == searchButton)
+		    	{
+		    		String searched = searchField.getText();
+		    		System.out.println(searched);
+		    	}
 		    }
 	    };
 	    
@@ -228,15 +241,30 @@ public class GUI implements ABInterface
 	    viewAddresses.addActionListener(actionListener);
 	    saveBook.addActionListener(actionListener);
 	    quitBook.addActionListener(actionListener);
+	    searchButton.addActionListener(actionListener);
 	    
 	    // Customize main JPanel
 	    JPanel mainPanel = new JPanel();
+	    
 	    mainPanel.setOpaque(true);
 	    mainPanel.setBackground(Color.black);
-	    mainPanel.add(addButton);
-	    mainPanel.add(view_oneButton);
-	    mainPanel.add(view_allButton);
-	    mainPanel.add(quitButton);
+	    //mainPanel.add(addButton);
+	    //mainPanel.add(view_oneButton);
+	    //mainPanel.add(view_allButton);
+	    //mainPanel.add(quitButton);
+	    String columns[] = {"Name", "City", "State", "ZIP"};
+	    String dataValues[][] = {
+	    {"Jeremy", "Eugene", "Oregon", "97403"},
+	    {"Dylan", "Coburg", "Washington", "99999"},
+	    {"Eric", "Dana", "California", "11111"},
+	    {"Elliott", "DC", "New York", "22222"}
+	    };
+	    
+	    JTable mainTable = new JTable(dataValues, columns);
+	    mainTable.setAutoCreateRowSorter(true);
+	    JScrollPane mainScrollpane = new JScrollPane(mainTable);
+	    mainPanel.add(mainScrollpane, BorderLayout.CENTER);
+	    
 	    
 	    // Customize side panel
 	    JPanel sidePanel = new JPanel();
@@ -253,6 +281,7 @@ public class GUI implements ABInterface
 	    frame.add(sidePanel, BorderLayout.WEST);
 	    frame.add(bottomPanel, BorderLayout.SOUTH);
 	    frame.setSize(300, 300);
+	    frame.setMinimumSize(new Dimension(300, 300));
 	    frame.setVisible(true);
 	    
 	}	
@@ -291,11 +320,15 @@ public class GUI implements ABInterface
 	    // the edge of the container and the container.
 	    layout.setAutoCreateContainerGaps(true);
 
-		
 		frame.add(inputpanel, layout);
 		frame.setSize(300, 300);
 		frame.setLocationByPlatform(true);
         frame.setVisible(true);
         frame.setResizable(false);
+	}
+	
+	public void tableLayout()
+	{
+		
 	}
 }
