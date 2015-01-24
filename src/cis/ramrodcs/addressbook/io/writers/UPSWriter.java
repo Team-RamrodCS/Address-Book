@@ -5,14 +5,34 @@ import java.util.Map;
 
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.DataEntry;
+import cis.ramrodcs.addressbook.io.FileType;
 import cis.ramrodcs.addressbook.io.FileWriter;
 
+/**
+ * Writes address books using the <code>UPS Standard</code> File format.
+ * 
+ * @author eewing
+ * 
+ * @see FileWriter
+ */
 public class UPSWriter extends FileWriter {
 
+	/**
+	 * Superclass constructor
+	 * 
+	 * @param book the Address Book to write when <code>write</code> is called.
+	 * 
+	 * @see FileWriter.FileWriter
+	 */
 	public UPSWriter(AddressBook book) {
-		super(book);
+		super(book, FileType.UPS);
 	}
 
+	/**
+	 * Formats the stored Address Book to the <code>UPS Standard</code> File Format.
+	 * 
+	 * @return a list of Strings formatting according to the UPS File Format.
+	 */
 	@Override
 	protected ArrayList<String> format() {
 		ArrayList<String> lines = new ArrayList<String>();

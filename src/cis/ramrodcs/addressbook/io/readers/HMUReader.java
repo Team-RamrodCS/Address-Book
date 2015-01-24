@@ -7,12 +7,29 @@ import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.DataEntry;
 import cis.ramrodcs.addressbook.io.FileReader;
 
+/**
+ * Loads HMU-style documents into Address Book objects
+ * 
+ * @author eewing
+ *
+ */
 public class HMUReader extends FileReader {
 
+	/**
+	 * Superclass Constructor
+	 * 
+	 * @param file the file to read an Address Book from.
+	 * @param book the Address Book to save read contacts to.
+	 */
 	public HMUReader(String file, AddressBook book) {
 		super(file, book);
 	}
 
+	/**
+	 * Reads a file into the stored Address Book
+	 * 
+	 * @throws FileNotFoundException
+	 */
 	@Override
 	public void read() throws FileNotFoundException {
 		/* Load contents of text file into fresh AddressBook */

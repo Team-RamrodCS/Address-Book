@@ -347,6 +347,10 @@ public class GUI implements ABInterface
 		fc.showOpenDialog(jf);
 		open = fc.getSelectedFile();
 		
+		if(open == null) {
+			return;
+		}
+		
 		try {
 			path = open.getCanonicalPath();
 		}
