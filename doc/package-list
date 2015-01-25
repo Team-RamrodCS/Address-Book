@@ -1,1 +1,5 @@
 cis.ramrodcs.addressbook
+cis.ramrodcs.addressbook.interfaces
+cis.ramrodcs.addressbook.io
+cis.ramrodcs.addressbook.io.readers
+cis.ramrodcs.addressbook.io.writers

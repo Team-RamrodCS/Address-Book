@@ -24,7 +24,7 @@ public class TSVWriter extends FileWriter {
 	 * 
 	 * @param book the Address Book to write when <code>write</code> is called.
 	 * 
-	 * @see FileWriter.FileWriter
+	 * @see FileWriter#FileWriter
 	 */
 	public TSVWriter(AddressBook book) {
 		super(book, FileType.TSV);

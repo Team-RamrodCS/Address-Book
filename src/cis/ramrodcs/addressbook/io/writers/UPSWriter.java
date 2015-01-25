@@ -22,7 +22,7 @@ public class UPSWriter extends FileWriter {
 	 * 
 	 * @param book the Address Book to write when <code>write</code> is called.
 	 * 
-	 * @see FileWriter.FileWriter
+	 * @see FileWriter#FileWriter
 	 */
 	public UPSWriter(AddressBook book) {
 		super(book, FileType.UPS);

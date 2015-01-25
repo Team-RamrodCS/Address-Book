@@ -22,7 +22,6 @@ import cis.ramrodcs.addressbook.AddressBook;
 /**
  * 
  * @author JeremyLipps
- * @date Jan. 19, 2015
  * 
  * Class that controls the GUI and its associated functions.
  * @see ABInterface

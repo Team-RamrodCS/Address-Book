@@ -21,7 +21,6 @@ import java.util.Scanner;
  * Stores lists of entries to use as an Address Book.
  * 
  * @author eewing
- * @date Jan. 12, 2015
  * 
  * @see DataEntry
  *
@@ -47,8 +46,8 @@ public class AddressBook {
 	/**
 	 *  Overloaded constructor for building an address book from file path
 	 *  
-	 * @param fileStr
-	 * @throws IOException
+	 * @param fileStr the file to set as the default save location for this Address Book
+	 * @throws IOException when the file to load from cannot be accessed
 	 */
 	public AddressBook (String fileStr) throws IOException {
 		loadFile(fileStr);
@@ -88,6 +87,8 @@ public class AddressBook {
 	
 	/**
 	 * Set the string path for the address book's save file
+	 * 
+	 * @param fileStr the file to set as the default save location
 	 */
 	public void setSave(String fileStr) {
 		saveFile = fileStr;
@@ -106,13 +107,19 @@ public class AddressBook {
 	/**
 	 * Load text file into a new address book
 	 *  
-	 * @param fileStr
-	 * @throws IOException
+	 * @param fileStr the file to load this Address Book from
+	 * @throws FileNotFoundException when the file given cannot be found.
 	 */
 	public void loadFile(String fileStr) throws FileNotFoundException {
 		loadFile(fileStr, FileType.HMU);
 	}
-	
+	/**
+	 * Load text file into a new address book
+	 *  
+	 * @param fileStr the file to load this Address Book from
+	 * @param type the type of file to load
+	 * @throws FileNotFoundException when the file given cannot be found.
+	 */
 	public void loadFile(String fileStr, FileType type) throws FileNotFoundException {
 		FileReader reader = null;
 		switch(type) {
@@ -133,13 +140,19 @@ public class AddressBook {
 	/**
 	 * Check for valid save file. If it exists, write contents of address book to said file 
 	 *  
-	 * @throws IOException
+	 * @throws FileNotFoundException when no valid save file was stored previously
 	 */
 	public void saveFile() throws FileNotFoundException {
 		saveFile(FileType.HMU);
 		//TODO Instead of assuming HMU file type, save loaded file type when loading file.
 	}
 	
+	/**
+	 * Check for valid save file. If it exists, write contents of address book to said file 
+	 *  
+	 * @param type the type of file to save as
+	 * @throws FileNotFoundException when no default save location has been set
+	 */
 	public void saveFile(FileType type) throws FileNotFoundException{
 		if (getSave().equals("")) {
 			throw new FileNotFoundException("This address book has no valid save file.");
@@ -149,6 +162,12 @@ public class AddressBook {
 		}
 	}
 	
+	/**
+	 * Check for valid save file. If it exists, write contents of address book to said file 
+	 *  
+	 * @param fileStr the string representation of the path to the save location
+	 * @param type the type of file to save as
+	 */
 	public void saveFile(String fileStr, FileType type) {
 		FileWriter writer;
 		switch(type) {
@@ -171,8 +190,7 @@ public class AddressBook {
 	 * Write contents of address book to file
 	 * TODO: If file does not exist, prompt to create/save to new file 
 	 *  
-	 * @param fileStr
-	 * @throws IOException
+	 * @param fileStr the file to save this Address Book to
 	 */
 	public void saveFile(String fileStr) {
 		saveFile(fileStr, FileType.HMU);

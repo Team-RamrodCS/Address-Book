@@ -22,7 +22,7 @@ public class HMUWriter extends FileWriter {
 	 * 
 	 * @param book the Address Book to write when <code>write</code> is called.
 	 * 
-	 * @see FileWriter.FileWriter
+	 * @see FileWriter#FileWriter
 	 */
 	public HMUWriter(AddressBook book) {
 		super(book, FileType.HMU);

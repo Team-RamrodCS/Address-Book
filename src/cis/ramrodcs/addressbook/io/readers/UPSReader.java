@@ -28,7 +28,7 @@ public class UPSReader extends FileReader {
 	/**
 	 * Reads a file into the stored Address Book
 	 * 
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException when the stored file cannot be found.
 	 */
 	@Override
 	public void read() throws FileNotFoundException {		/* Load contents of text file into fresh AddressBook */

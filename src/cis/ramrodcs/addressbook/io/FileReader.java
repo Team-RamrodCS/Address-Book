@@ -22,7 +22,7 @@ public abstract class FileReader {
 	 * @param file the string path to save the file to
 	 * @param book the Address Book to save contents after reading
 	 * 
-	 * @see Address Book
+	 * @see AddressBook
 	 */
 	public FileReader(String file, AddressBook book) {
 		this.file = new File(file);
