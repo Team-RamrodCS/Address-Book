@@ -7,9 +7,9 @@ package cis.ramrodcs.addressbook.io;
  *
  */
 public enum FileType {
-	HMU("hmu"),
-	TSV("tsv"),
-	UPS("ups");
+	HMU(".hmu"),
+	TSV(".tsv"),
+	UPS(".ups");
 	
 	private String extension;
 	
