@@ -28,6 +28,6 @@ public class UPSFilter extends FileFilter {
 	        return false;
 	    }
 	public String getDescription() {
-        return ".ups";
+        return "ups";
     }
 }

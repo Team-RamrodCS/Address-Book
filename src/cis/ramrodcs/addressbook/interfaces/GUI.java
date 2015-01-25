@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.io.FileChooser;
@@ -222,6 +223,7 @@ public class GUI implements ABInterface
 		    	else if (e.getSource() == saveBook)
 		    	{
 		    		System.out.println("Save book.");
+		    		saveFile(frame, book);
 		    	}
 		    	
 		    	else if (e.getSource() == quitBook)
@@ -363,6 +365,29 @@ public class GUI implements ABInterface
 		catch (FileNotFoundException ex) {
 			System.out.println(" File not found: " + ex.getMessage());
 		}
+	}
+	
+	void saveFile(JFrame jf, AddressBook bk) {
+		final FileChooser fc = new FileChooser();
+		File save = null;
+		String path = null;
+		
+		fc.showSaveDialog(jf);
+		save = fc.getSelectedFile();
+		String ext = fc.getFileFilter().getDescription();
+		
+		System.out.println("FILEFILTER: " + ext);
+		
+		try {
+			path = save.getCanonicalPath();
+		}
+		catch (IOException ex) {
+			System.out.println(" Invalid file: " + ex.getMessage());
+		}
+		
+		
+		bk.saveFile(path, FileType.valueOf(ext.toUpperCase()));
+		
 	}
 	
 	void viewAll(AddressBook bk) {
