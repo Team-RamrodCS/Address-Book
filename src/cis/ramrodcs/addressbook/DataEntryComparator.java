@@ -6,7 +6,6 @@ import java.util.Comparator;
  * Comparator for sorting data entries by field
  * 
  * @author Dylan Ruggeroli
- * @date 1/24/2015
  * 
  */
 public class DataEntryComparator implements Comparator<DataEntry> {

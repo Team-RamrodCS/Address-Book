@@ -3,6 +3,7 @@ package cis.ramrodcs.addressbook.interfaces;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -19,6 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
@@ -30,7 +33,6 @@ import cis.ramrodcs.addressbook.io.FileType;
 /**
  * 
  * @author JeremyLipps
- * @date Jan. 19, 2015
  * 
  * Class that controls the GUI and its associated functions.
  * @see ABInterface
@@ -259,16 +261,26 @@ public class GUI implements ABInterface
 	    searchButton.addActionListener(actionListener);
 	    
 	    // Customize main JPanel
-	    JPanel mainPanel = new JPanel();
 	    
-	    mainPanel.setOpaque(true);
-	    mainPanel.setBackground(Color.black);
-	    //mainPanel.add(addButton);
-	    //mainPanel.add(view_oneButton);
-	    //mainPanel.add(view_allButton);
-	    //mainPanel.add(quitButton);
+	    JTabbedPane tabbedPane = new JTabbedPane();
+	    //tabbedPane.add("Tab 1", tab1);
+        //tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+       
+        JComponent tab2 = makeTextPanel("Panel 2");
+        //tabbedPane.add("Tab 2", tab2);
+        //tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+        //tabbedPane.setPreferredSize(new Dimension(300, 300));
+
 	    String columns[] = {"Name", "City", "State", "ZIP"};
 	    String dataValues[][] = {
+	    {"Jeremy", "Eugene", "Oregon", "97403"},
+	    {"Dylan", "Coburg", "Washington", "99999"},
+	    {"Eric", "Dana", "California", "11111"},
+	    {"Elliott", "DC", "New York", "22222"},
+	    {"Jeremy", "Eugene", "Oregon", "97403"},
+	    {"Dylan", "Coburg", "Washington", "99999"},
+	    {"Eric", "Dana", "California", "11111"},
+	    {"Elliott", "DC", "New York", "22222"},
 	    {"Jeremy", "Eugene", "Oregon", "97403"},
 	    {"Dylan", "Coburg", "Washington", "99999"},
 	    {"Eric", "Dana", "California", "11111"},
@@ -277,29 +289,37 @@ public class GUI implements ABInterface
 	    
 	    JTable mainTable = new JTable(dataValues, columns);
 	    mainTable.setAutoCreateRowSorter(true);
-	    JScrollPane mainScrollpane = new JScrollPane(mainTable);
-	    mainPanel.add(mainScrollpane, BorderLayout.CENTER);
+	    mainTable.setAutoResizeMode(0);
 	    
+	    JScrollPane mainScrollpane = new JScrollPane(mainTable);
+	    tabbedPane.addTab("Tab 1", mainScrollpane);
+	    tabbedPane.add("Tab 2", tab2);
+
 	    
 	    // Customize side panel
 	    JPanel sidePanel = new JPanel();
 	    sidePanel.setOpaque(true);
 	    sidePanel.setBackground(Color.blue);
 	    
-	    // Customize bottom panel
-	    JPanel bottomPanel = new JPanel();
-	    bottomPanel.setOpaque(true);
-	    bottomPanel.setBackground(Color.red);
-	    
 	    // Add panels to the frame
-	    frame.add(mainPanel, BorderLayout.CENTER);
+	    frame.add(tabbedPane, BorderLayout.CENTER);
 	    frame.add(sidePanel, BorderLayout.WEST);
-	    frame.add(bottomPanel, BorderLayout.SOUTH);
 	    frame.setSize(300, 300);
 	    frame.setMinimumSize(new Dimension(300, 300));
 	    frame.setVisible(true);
 	    
 	}	
+	
+	
+	 protected JComponent makeTextPanel(String text) {
+         JPanel panel = new JPanel(false);
+         JLabel filler = new JLabel(text);
+         filler.setHorizontalAlignment(JLabel.CENTER);
+         panel.setLayout(new GridLayout(1, 1));
+         panel.add(filler);
+         return panel;
+     }
+	
 	
 	/**
 	 * Opens new frame to input address data.
@@ -350,6 +370,10 @@ public class GUI implements ABInterface
 		
 		fc.showOpenDialog(jf);
 		open = fc.getSelectedFile();
+		
+		if(open == null) {
+			return;
+		}
 		
 		try {
 			path = open.getCanonicalPath();

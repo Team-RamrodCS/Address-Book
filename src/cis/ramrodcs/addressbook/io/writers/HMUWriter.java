@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.DataEntry;
+import cis.ramrodcs.addressbook.io.FileType;
 import cis.ramrodcs.addressbook.io.FileWriter;
 
 /**
@@ -21,14 +22,16 @@ public class HMUWriter extends FileWriter {
 	 * 
 	 * @param book the Address Book to write when <code>write</code> is called.
 	 * 
-	 * @see FileWriter.FileWriter
+	 * @see FileWriter#FileWriter
 	 */
 	public HMUWriter(AddressBook book) {
-		super(book);
+		super(book, FileType.HMU);
 	}
 
 	/**
 	 * Formats the stored Address Book to the <code>Hit Me Up!</code> File Format.
+	 * 
+	 * @return a list of Strings formatting according to the HMU File Format.
 	 */
 	@Override
 	protected ArrayList<String> format() {

@@ -11,7 +11,6 @@ import cis.ramrodcs.addressbook.io.FileType;
 /**
  * 
  * @author JeremyLipps
- * @date Jan. 19, 2015
  * 
  * Class that controls the CLI and its associated functions.
  * @see ABInterface

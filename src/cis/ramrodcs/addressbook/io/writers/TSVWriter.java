@@ -7,6 +7,7 @@ import java.util.Map;
 
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.DataEntry;
+import cis.ramrodcs.addressbook.io.FileType;
 import cis.ramrodcs.addressbook.io.FileWriter;
 
 /**
@@ -23,15 +24,17 @@ public class TSVWriter extends FileWriter {
 	 * 
 	 * @param book the Address Book to write when <code>write</code> is called.
 	 * 
-	 * @see FileWriter.FileWriter
+	 * @see FileWriter#FileWriter
 	 */
 	public TSVWriter(AddressBook book) {
-		super(book);
+		super(book, FileType.TSV);
 	}
 
 
 	/**
 	 * Formats the stored Address Book to the <code>Tab Separated Values</code> File Format.
+	 * 
+	 * @return a list of Strings formatting according to the TSV File Format.
 	 */
 	@Override
 	protected ArrayList<String> format() {
