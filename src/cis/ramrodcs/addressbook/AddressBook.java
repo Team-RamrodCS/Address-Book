@@ -13,6 +13,8 @@ import cis.ramrodcs.addressbook.io.readers.UPSReader;
 import cis.ramrodcs.addressbook.io.writers.HMUWriter;
 import cis.ramrodcs.addressbook.io.writers.TSVWriter;
 import cis.ramrodcs.addressbook.io.writers.UPSWriter;
+
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
@@ -97,10 +99,18 @@ public class AddressBook {
 	public void printAllEntries() {
 		for (DataEntry contact : this.getEntries())
 		{
-			System.out.println("Name: " + contact.getField("Name"));
-			System.out.println("State: " + contact.getField("State"));
-			System.out.println("Phone number: " + contact.getField("Number"));
+			for(String key : DataEntry.defaultEntries) {
+				System.out.println(key + ": " + contact.getField(key));
+			}
+			for(String key : contact.getEntries().keySet()) {
+				if(!Arrays.asList(DataEntry.defaultEntries).contains(key)) {
+					/* Only display custom entries */
+					System.out.println(key + ": " + contact.getField(key));
+				}
+			}
 			System.out.println("");
+
+			
 		}
 	}
 	/**

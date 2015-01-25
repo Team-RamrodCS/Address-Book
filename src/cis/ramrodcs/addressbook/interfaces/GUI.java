@@ -1,23 +1,30 @@
 package cis.ramrodcs.addressbook.interfaces;
 
 import java.awt.BorderLayout;
-import java.awt.event.*;
-import java.awt.Component;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
-import cis.ramrodcs.addressbook.AddressBook;
-import cis.ramrodcs.addressbook.DataEntry;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import cis.ramrodcs.addressbook.AddressBook;
+import cis.ramrodcs.addressbook.io.FileChooser;
+import cis.ramrodcs.addressbook.io.FileType;
 
 /**
  * 
@@ -166,11 +173,6 @@ public class GUI implements ABInterface
 		    	else if (e.getSource() == newField)
 		    	{
 		    		System.out.println("New field.");
-		    	}
-		    	
-		    	else if (e.getSource() == openBook)
-		    	{
-		    		System.out.println("Open book.");
 		    	}
 		    	
 		    	else if (e.getSource() == importBook)
@@ -340,7 +342,7 @@ public class GUI implements ABInterface
 	
 	
 	void loadFile(JFrame jf, AddressBook bk) {
-		final JFileChooser fc = new JFileChooser();
+		final FileChooser fc = new FileChooser();
 		File open = null;
 		String path = null;
 		
@@ -356,7 +358,7 @@ public class GUI implements ABInterface
 		
 		System.out.println("path : " + path);
 		try {
-			bk.loadFile(path);
+			bk.loadFile(path, FileType.UPS);
 		}
 		catch (FileNotFoundException ex) {
 			System.out.println(" File not found: " + ex.getMessage());
