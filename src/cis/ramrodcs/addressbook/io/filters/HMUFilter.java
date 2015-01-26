@@ -4,7 +4,10 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
+import cis.ramrodcs.addressbook.io.FileType;
+
 public class HMUFilter extends FileFilter {
+	
 	public boolean accept(File f) {
 		if (f.isDirectory()) {
 			return true;

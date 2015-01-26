@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -22,10 +23,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import cis.ramrodcs.addressbook.AddressBook;
+import cis.ramrodcs.addressbook.AddressBookGUI;
+import cis.ramrodcs.addressbook.interfaces.listeners.LoadAddressBookListener;
+import cis.ramrodcs.addressbook.interfaces.listeners.NewAddressBookListener;
 import cis.ramrodcs.addressbook.io.FileChooser;
 import cis.ramrodcs.addressbook.io.FileType;
 
@@ -39,13 +42,19 @@ import cis.ramrodcs.addressbook.io.FileType;
  */
 public class GUI implements ABInterface
 {
+	
+	private ArrayList<AddressBookGUI> books;
+	private int currentBook = 0;
+    JTabbedPane tabbedPane = new JTabbedPane();
+
+	
 	/**
 	 * When called, this function starts the GUI interface.
 	 */
 	@Override
 	public void start() 
 	{
-		
+		books = new ArrayList<AddressBookGUI>();
 	    JFrame frame = new JFrame("Address Book");
 	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    JButton addButton = new JButton("Add Address");
@@ -55,9 +64,6 @@ public class GUI implements ABInterface
 	    JButton searchButton = new JButton("Search");
 	    
 	    JTextField searchField = new JTextField("Search");
-	    
-	    // Create new AddressBook
-	    AddressBook book = new AddressBook();
 	    
 	    //Where the GUI is created:
 	    JMenuBar menuBar;
@@ -147,7 +153,7 @@ public class GUI implements ABInterface
 		    	else if (e.getSource() == view_allButton)
 		    	{
 		    		System.out.println("View all addresses.");
-		    		viewAll(book);
+		    		viewAll(books.get(currentBook));
 		    	}
 		    	
 		    	else if (e.getSource() == quitButton)
@@ -155,21 +161,10 @@ public class GUI implements ABInterface
 		    		System.out.println("Quit program.");
 		    	}
 		    	
-		    	else if (e.getSource() == openBook)
-		    	{
-		    		System.out.println("load file");
-		    		loadFile(frame, book);
-		    	}
-		    	
 		    	else if (e.getSource() == newAddress)
 		    	{
 		    		//addFrame();
 		    		AddAddress.main(null);
-		    	}
-		    	
-		    	else if (e.getSource() == newBook)
-		    	{
-		    		System.out.println("New book.");
 		    	}
 		    	
 		    	else if (e.getSource() == newField)
@@ -191,34 +186,14 @@ public class GUI implements ABInterface
 		    	{
 		    		System.out.println("You've chosen to retrieve an an address.  Please input the full name of the person you'd like to see.");
 					addFrame();
-		    		/*String nameRequest = scan.nextLine();
-					
-					
-					boolean found = false;
-					
-					for (DataEntry contact : book.getEntries())
-					{
-						if (nameRequest.equals(contact.getField("Name")))
-						{
-							found = true;
-							System.out.println("Here's what we found:");
-							System.out.println("Name: " + contact.getField("Name"));
-							System.out.println("State: " + contact.getField("State"));
-							System.out.println("Phone number: " + contact.getField("Number"));
-						}
-					}
 
-					if (found == false)
-					{
-						System.out.println("Contact name was not found.");
-					}*/
 		    	}
 		    	
 		    	else if (e.getSource() == viewAddresses)
 		    	{
 		    		System.out.println("You've chosen to view all addresses, which are listed below.");
-					System.out.println("Number of current contacts: " + book.getEntries().size());
-					viewAll(book);
+					System.out.println("Number of current contacts: " + books.get(currentBook).getEntries().size());
+					viewAll(books.get(currentBook));
 		    	}
 		    	
 		    	else if (e.getSource() == saveBook)
@@ -247,9 +222,9 @@ public class GUI implements ABInterface
 
 	    
 	    newAddress.addActionListener(actionListener);
-	    newBook.addActionListener(actionListener);
+	    newBook.addActionListener(new NewAddressBookListener(this));
 	    newField.addActionListener(actionListener);
-	    openBook.addActionListener(actionListener);
+	    openBook.addActionListener(new LoadAddressBookListener(this, frame));
 	    importBook.addActionListener(actionListener);
 	    exportBook.addActionListener(actionListener);
 	    viewAddress.addActionListener(actionListener);
@@ -260,40 +235,8 @@ public class GUI implements ABInterface
 	    
 	    // Customize main JPanel
 	    
-	    JTabbedPane tabbedPane = new JTabbedPane();
-	    //tabbedPane.add("Tab 1", tab1);
-        //tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-       
-        JComponent tab2 = makeTextPanel("Panel 2");
-        //tabbedPane.add("Tab 2", tab2);
-        //tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-        //tabbedPane.setPreferredSize(new Dimension(300, 300));
+	    tabbedPane = new JTabbedPane();
 
-	    String columns[] = {"Name", "City", "State", "ZIP"};
-	    String dataValues[][] = {
-	    {"Jeremy", "Eugene", "Oregon", "97403"},
-	    {"Dylan", "Coburg", "Washington", "99999"},
-	    {"Eric", "Dana", "California", "11111"},
-	    {"Elliott", "DC", "New York", "22222"},
-	    {"Jeremy", "Eugene", "Oregon", "97403"},
-	    {"Dylan", "Coburg", "Washington", "99999"},
-	    {"Eric", "Dana", "California", "11111"},
-	    {"Elliott", "DC", "New York", "22222"},
-	    {"Jeremy", "Eugene", "Oregon", "97403"},
-	    {"Dylan", "Coburg", "Washington", "99999"},
-	    {"Eric", "Dana", "California", "11111"},
-	    {"Elliott", "DC", "New York", "22222"}
-	    };
-	    
-	    JTable mainTable = new JTable(dataValues, columns);
-	    mainTable.setAutoCreateRowSorter(true);
-	    mainTable.setAutoResizeMode(0);
-	    
-	    JScrollPane mainScrollpane = new JScrollPane(mainTable);
-	    tabbedPane.addTab("Tab 1", mainScrollpane);
-	    tabbedPane.add("Tab 2", tab2);
-
-	    
 	    // Customize side panel
 	    JPanel sidePanel = new JPanel();
 	    sidePanel.setOpaque(true);
@@ -302,7 +245,7 @@ public class GUI implements ABInterface
 	    // Add panels to the frame
 	    frame.add(tabbedPane, BorderLayout.CENTER);
 	    frame.add(sidePanel, BorderLayout.WEST);
-	    frame.setSize(300, 300);
+	    frame.setSize(500, 500);
 	    frame.setMinimumSize(new Dimension(300, 300));
 	    frame.setVisible(true);
 	    
@@ -361,7 +304,7 @@ public class GUI implements ABInterface
 	}
 	
 	
-	void loadFile(JFrame jf, AddressBook bk) {
+	public void loadFile(JFrame jf) {
 		final FileChooser fc = new FileChooser();
 		File open = null;
 		String path = null;
@@ -382,16 +325,36 @@ public class GUI implements ABInterface
 		
 		System.out.println("path : " + path);
 		try {
+			AddressBookGUI bk = new AddressBookGUI();
 			bk.loadFile(path, FileType.UPS);
+			addAddressBook(bk);
 		}
 		catch (FileNotFoundException ex) {
 			System.out.println(" File not found: " + ex.getMessage());
 		}
 	}
 	
+	public void saveFile(JFrame jf) {
+		final FileChooser fc = new FileChooser();
+		File save = null;
+		String path = "";
+		
+		fc.showOpenDialog(jf);
+		save = fc.getSelectedFile();
+		
+		
+		
+	}
+	
 	void viewAll(AddressBook bk) {
 		System.out.println("INSIDE VIEWALL");
 		bk.printAllEntries();
+	}
+	
+	public void addAddressBook(AddressBookGUI book) {
+		books.add(book);
+	    JScrollPane scrollPane = new JScrollPane(book.table);
+	    tabbedPane.addTab("New Address Book", scrollPane);
 	}
 
 	public void tableLayout()
