@@ -33,6 +33,6 @@ public class HMUFilter extends FileFilter {
 	        return false;
 	    }
 	public String getDescription() {
-        return ".hmu";
+        return "hmu";
     }
 }

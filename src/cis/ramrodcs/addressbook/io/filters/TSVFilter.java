@@ -28,6 +28,6 @@ public class TSVFilter extends FileFilter {
 	        return false;
 	    }
 	public String getDescription() {
-        return ".tsv";
+        return "tsv";
     }
 }

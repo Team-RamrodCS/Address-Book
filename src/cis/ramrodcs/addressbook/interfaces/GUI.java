@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.AddressBookGUI;
@@ -199,6 +200,7 @@ public class GUI implements ABInterface
 		    	else if (e.getSource() == saveBook)
 		    	{
 		    		System.out.println("Save book.");
+		    		saveFile(frame, getCurrentBook());
 		    	}
 		    	
 		    	else if (e.getSource() == quitBook)
@@ -334,15 +336,26 @@ public class GUI implements ABInterface
 		}
 	}
 	
-	public void saveFile(JFrame jf) {
+	void saveFile(JFrame jf, AddressBook bk) {
 		final FileChooser fc = new FileChooser();
 		File save = null;
-		String path = "";
+		String path = null;
 		
-		fc.showOpenDialog(jf);
+		fc.showSaveDialog(jf);
 		save = fc.getSelectedFile();
+		String ext = fc.getFileFilter().getDescription();
+		
+		System.out.println("FILEFILTER: " + ext);
+		
+		try {
+			path = save.getCanonicalPath();
+		}
+		catch (IOException ex) {
+			System.out.println(" Invalid file: " + ex.getMessage());
+		}
 		
 		
+		bk.saveFile(path, FileType.valueOf(ext.toUpperCase()));
 		
 	}
 	
@@ -355,6 +368,10 @@ public class GUI implements ABInterface
 		books.add(book);
 	    JScrollPane scrollPane = new JScrollPane(book.table);
 	    tabbedPane.addTab("New Address Book", scrollPane);
+	}
+	
+	private AddressBook getCurrentBook() {
+		return books.get(currentBook);
 	}
 
 	public void tableLayout()
