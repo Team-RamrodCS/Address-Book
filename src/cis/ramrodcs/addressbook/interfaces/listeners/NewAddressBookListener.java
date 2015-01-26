@@ -15,8 +15,8 @@ public class NewAddressBookListener implements ActionListener {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		AddressBookGUI book = new AddressBookGUI();
+	public void actionPerformed(ActionEvent event) {
+		AddressBookGUI book = new AddressBookGUI(gui);
 		gui.addAddressBook(book);
 	}
 

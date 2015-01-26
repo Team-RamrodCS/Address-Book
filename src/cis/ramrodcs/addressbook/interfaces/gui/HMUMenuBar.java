@@ -153,11 +153,6 @@ public class HMUMenuBar {
 					gui.viewAll(gui.getCurrentBook());
 		    	}
 		    	
-		    	else if (e.getSource() == quitBook)
-		    	{
-		    		System.out.println("Menu quit.");
-		    	}
-		    	
 		    	else if (e.getSource() == searchButton)
 		    	{
 		    		String searched = searchField.getText();

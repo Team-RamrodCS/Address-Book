@@ -5,6 +5,9 @@ import java.util.LinkedHashSet;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import cis.ramrodcs.addressbook.interfaces.GUI;
+import cis.ramrodcs.addressbook.interfaces.listeners.TableMouseListener;
+
 
 public class AddressBookGUI extends AddressBook {
 
@@ -13,7 +16,7 @@ public class AddressBookGUI extends AddressBook {
 	
 	public JTable table;
 	
-	public AddressBookGUI() {
+	public AddressBookGUI(GUI gui) {
 		model = new DefaultTableModel();
 		table = new JTable(model);
 	    table.setAutoCreateRowSorter(true);
@@ -22,6 +25,7 @@ public class AddressBookGUI extends AddressBook {
 			model.addColumn(s);
 			System.out.println("Adding column: " + s);
 		}
+		table.addMouseListener(new TableMouseListener(gui, table));
 	}
 	
 	@Override

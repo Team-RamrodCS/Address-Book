@@ -1,39 +1,26 @@
 package cis.ramrodcs.addressbook.interfaces;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 import cis.ramrodcs.addressbook.AddressBook;
 import cis.ramrodcs.addressbook.AddressBookGUI;
-import cis.ramrodcs.addressbook.interfaces.gui.HMUDetailedViewer;
+import cis.ramrodcs.addressbook.DataEntry;
+import cis.ramrodcs.addressbook.interfaces.gui.HMUDetailViewer;
 import cis.ramrodcs.addressbook.interfaces.gui.HMUMainPanel;
 import cis.ramrodcs.addressbook.interfaces.gui.HMUMenuBar;
-import cis.ramrodcs.addressbook.interfaces.listeners.LoadAddressBookListener;
-import cis.ramrodcs.addressbook.interfaces.listeners.NewAddressBookListener;
-import cis.ramrodcs.addressbook.interfaces.listeners.QuitListener;
-import cis.ramrodcs.addressbook.interfaces.listeners.SaveAddressBookListener;
 import cis.ramrodcs.addressbook.io.FileChooser;
 import cis.ramrodcs.addressbook.io.FileType;
 
@@ -50,10 +37,12 @@ public class GUI implements ABInterface
 	
 	private ArrayList<AddressBookGUI> books;
 	private int currentBook = 0;
+	
+	
 	JFrame window;
 	HMUMenuBar menuBar;
 	HMUMainPanel mainPanel;
-	HMUDetailedViewer sidePanel;
+	HMUDetailViewer sidePanel;
 
 	
 	/**
@@ -68,15 +57,19 @@ public class GUI implements ABInterface
 	    
 	    menuBar = new HMUMenuBar(this);
 	    mainPanel = new HMUMainPanel();
-	    sidePanel = new HMUDetailedViewer();
+	    sidePanel = new HMUDetailViewer();
 
 	    window.setJMenuBar(menuBar.getMenuBar());
 	    
 	    
 	    // Add panels to the frame
-	    mainPanel.addElements(window);
-	    sidePanel.addElements(window);
-	    
+	    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sidePanel, mainPanel);
+	    split.setOneTouchExpandable(true);
+	    split.setPreferredSize(new Dimension(100, 500));
+	    split.setResizeWeight(0.3);
+	    //window.add(sidePanel, BorderLayout.CENTER);
+	    //window.add(sidePanel, BorderLayout.WEST);
+	    window.add(split, BorderLayout.CENTER);
 	    window.setSize(500, 500);
 	    window.setMinimumSize(new Dimension(300, 300));
 	    window.setVisible(true);
@@ -143,7 +136,7 @@ public class GUI implements ABInterface
 		
 		System.out.println("path : " + path);
 		try {
-			AddressBookGUI bk = new AddressBookGUI();
+			AddressBookGUI bk = new AddressBookGUI(this);
 			bk.loadFile(path, FileType.UPS);
 			addAddressBook(bk);
 		}
@@ -193,5 +186,13 @@ public class GUI implements ABInterface
 
 	public JFrame getMainWindow() {
 		return window;
+	}
+	
+	public void setCurrentEntry(DataEntry entry) {
+		sidePanel.setCurrentEntry(entry);
+	}
+
+	public DataEntry getEntryAtRow(int rowAtPoint) {
+		return getCurrentBook().getEntries().get(rowAtPoint);
 	}
 }
