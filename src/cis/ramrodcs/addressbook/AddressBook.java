@@ -37,6 +37,7 @@ public class AddressBook {
 	private ArrayList<DataEntry> entries = new ArrayList<DataEntry>();
 	private ArrayList<DataEntry> searchResults = new ArrayList<DataEntry>();
 	private String saveFile = new String("");
+	private String name = "";
 	
 	/**
 	 *  Basic constructor
