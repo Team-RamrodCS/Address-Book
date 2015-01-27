@@ -46,18 +46,8 @@ public class HMUMenuBar {
 	    menuBar.add(menu);
 	    
 	    // A submenu for New 
-	    newSubmenu = new JMenu("New");
-
-	    newAddress = new JMenuItem("New Address");
-	    newSubmenu.add(newAddress);
-
 	    newBook = new JMenuItem("New Address Book");
-	    newSubmenu.add(newBook);
-	    
-	    newField = new JMenuItem("New User Field");
-	    newSubmenu.add(newField);
-	    
-	    menu.add(newSubmenu);
+	    menu.add(newBook);
 	    	    
 	    openBook = new JMenuItem("Open");
 	    menu.add(openBook);
@@ -66,17 +56,6 @@ public class HMUMenuBar {
 	    
 	    importBook = new JMenuItem("Import");
 	    menu.add(importBook);
-	    
-	    exportBook = new JMenuItem("Export");
-	    menu.add(exportBook);
-	    
-	    menu.addSeparator();
-	    
-	    viewAddress = new JMenuItem("View an address");
-	    menu.add(viewAddress);
-
-	    viewAddresses = new JMenuItem("View all addresses");
-	    menu.add(viewAddresses);
 	    
 	    menu.addSeparator();
 	    
@@ -101,56 +80,11 @@ public class HMUMenuBar {
 	    {
 		    public void actionPerformed(ActionEvent e) 
 		    {
-		    	if (e.getSource() == addButton)
-		    	{
-		    		System.out.println("Add an address.");
-		    	}
 		    	
-		    	else if (e.getSource() == view_oneButton)
-		    	{
-		    		System.out.println("View an address.");
-		    		ViewAddress.main(null);
-		    	}
 		    	
-		    	else if (e.getSource() == view_allButton)
-		    	{
-		    		System.out.println("View all addresses.");
-		    		gui.viewAll(gui.getCurrentBook());
-		    	}
-		    	
-		    	else if (e.getSource() == newAddress)
-		    	{
-		    		//addFrame();
-		    		AddAddress.main(null);
-		    	}
-		    	
-		    	else if (e.getSource() == newField)
-		    	{
-		    		System.out.println("New field.");
-		    	}
-		    	
-		    	else if (e.getSource() == importBook)
+		    	if (e.getSource() == importBook)
 		    	{
 		    		System.out.println("Import book.");
-		    	}
-		    	
-		    	else if (e.getSource() == exportBook)
-		    	{
-		    		System.out.println("Export book.");
-		    	}
-		    	
-		    	else if (e.getSource() == viewAddress)
-		    	{
-		    		System.out.println("You've chosen to retrieve an an address.  Please input the full name of the person you'd like to see.");
-					gui.addFrame();
-
-		    	}
-		    	
-		    	else if (e.getSource() == viewAddresses)
-		    	{
-		    		System.out.println("You've chosen to view all addresses, which are listed below.");
-					System.out.println("Number of current contacts: " + gui.getCurrentBook().getEntries().size());
-					gui.viewAll(gui.getCurrentBook());
 		    	}
 		    	
 		    	else if (e.getSource() == searchButton)
@@ -161,20 +95,12 @@ public class HMUMenuBar {
 		    }
 	    };	    
 	    // Set buttons and menu items to action listener
-	    addButton.addActionListener(actionListener);
-	    view_oneButton.addActionListener(actionListener);
-	    view_allButton.addActionListener(actionListener);
 	    quitButton.addActionListener(actionListener);
 
 	    
-	    newAddress.addActionListener(actionListener);
 	    newBook.addActionListener(new NewAddressBookListener(gui));
-	    newField.addActionListener(actionListener);
 	    openBook.addActionListener(new LoadAddressBookListener(gui));
 	    importBook.addActionListener(actionListener);
-	    exportBook.addActionListener(actionListener);
-	    viewAddress.addActionListener(actionListener); // TODO remove
-	    viewAddresses.addActionListener(actionListener); // TODO remove
 	    saveBook.addActionListener(new SaveAddressBookListener(gui));
 	    quitBook.addActionListener(new QuitListener(gui));
 	    searchButton.addActionListener(actionListener);

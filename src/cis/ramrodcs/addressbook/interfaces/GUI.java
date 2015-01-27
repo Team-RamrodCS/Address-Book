@@ -137,7 +137,7 @@ public class GUI implements ABInterface
 		System.out.println("path : " + path);
 		try {
 			AddressBookGUI bk = new AddressBookGUI(this);
-			bk.loadFile(path, FileType.UPS);
+			bk.loadFile(path, FileType.valueOf(fc.getFileFilter().getDescription().toUpperCase()));
 			addAddressBook(bk);
 		}
 		catch (FileNotFoundException ex) {
@@ -167,11 +167,6 @@ public class GUI implements ABInterface
 		
 		bk.saveFile(path, FileType.valueOf(ext.toUpperCase()));
 		
-	}
-	
-	public void viewAll(AddressBook bk) {
-		System.out.println("INSIDE VIEWALL");
-		bk.printAllEntries();
 	}
 	
 	public void addAddressBook(AddressBookGUI book) {

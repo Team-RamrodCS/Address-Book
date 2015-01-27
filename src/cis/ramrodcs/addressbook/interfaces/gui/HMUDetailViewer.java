@@ -1,11 +1,10 @@
 package cis.ramrodcs.addressbook.interfaces.gui;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Button;
+import java.awt.Component;
 
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -17,7 +16,7 @@ public class HMUDetailViewer extends JPanel{
 	
 	public HMUDetailViewer() {
 	    super.setOpaque(true);
-	    super.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+	    super.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 	
 	private void updateElements() {
@@ -31,6 +30,7 @@ public class HMUDetailViewer extends JPanel{
 			JLabel label = new JLabel(currentEntry.getField(s));
 			info.add(key);
 			info.add(label);
+			info.setAlignmentX(Component.LEFT_ALIGNMENT);
 			this.add(info);
 		}
 	}
@@ -40,6 +40,12 @@ public class HMUDetailViewer extends JPanel{
 		updateElements();
 		super.revalidate();
 		super.repaint();
+	}
+	
+	private JButton getAddEntryButton() {
+		JButton button = new JButton();
+		//JImageIcon icon = new JImageIcon();
+		return button;
 	}
 	
 }
