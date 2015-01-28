@@ -223,4 +223,10 @@ public class AddressBook {
 			}
 		}
 	}
+
+	public void removeDataEntry(DataEntry entry) {
+		if(entries.contains(entry)) {
+			entries.remove(entry);
+		}
+	}
 }

@@ -38,7 +38,7 @@ public class UPSReader extends FileReader {
 		while(scanner.hasNextLine()) {
 			/* Parse each line and convert to DataEntry format; Add each entry
 			 * to the AddressBook */
-			DataEntry entry = new DataEntry();
+			DataEntry entry = new DataEntry(book);
 			String element = scanner.nextLine();
 			
 			if (element.equals("")) {

@@ -40,7 +40,7 @@ public class CLI implements ABInterface
 			
 			String option = scan.nextLine();
 			
-			DataEntry entry = new DataEntry();
+			DataEntry entry = new DataEntry(book);
 			
 			if (option.equals("1"))
 			{

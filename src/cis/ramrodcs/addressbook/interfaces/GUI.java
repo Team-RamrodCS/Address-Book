@@ -21,6 +21,7 @@ import cis.ramrodcs.addressbook.DataEntry;
 import cis.ramrodcs.addressbook.interfaces.gui.HMUDetailViewer;
 import cis.ramrodcs.addressbook.interfaces.gui.HMUMainPanel;
 import cis.ramrodcs.addressbook.interfaces.gui.HMUMenuBar;
+import cis.ramrodcs.addressbook.interfaces.listeners.SwitchAddressBookListener;
 import cis.ramrodcs.addressbook.io.FileChooser;
 import cis.ramrodcs.addressbook.io.FileType;
 
@@ -35,8 +36,8 @@ import cis.ramrodcs.addressbook.io.FileType;
 public class GUI implements ABInterface
 {
 	
-	private ArrayList<AddressBookGUI> books;
-	private int currentBook = 0;
+	//private ArrayList<AddressBookGUI> books = null;
+	private AddressBookGUI activeBook = null;
 	
 	
 	JFrame window;
@@ -51,13 +52,13 @@ public class GUI implements ABInterface
 	@Override
 	public void start() 
 	{
-		books = new ArrayList<AddressBookGUI>();
+		//books = new ArrayList<AddressBookGUI>();
 	    window = new JFrame("Address Book");
 	    window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    
 	    menuBar = new HMUMenuBar(this);
-	    mainPanel = new HMUMainPanel();
-	    sidePanel = new HMUDetailViewer();
+	    mainPanel = new HMUMainPanel(this);
+	    sidePanel = new HMUDetailViewer(this);
 
 	    window.setJMenuBar(menuBar.getMenuBar());
 	    
@@ -66,12 +67,11 @@ public class GUI implements ABInterface
 	    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sidePanel, mainPanel);
 	    split.setOneTouchExpandable(true);
 	    split.setPreferredSize(new Dimension(100, 500));
-	    split.setResizeWeight(0.3);
+	    split.setResizeWeight(0.4);
 	    //window.add(sidePanel, BorderLayout.CENTER);
 	    //window.add(sidePanel, BorderLayout.WEST);
 	    window.add(split, BorderLayout.CENTER);
-	    window.setSize(500, 500);
-	    window.setMinimumSize(new Dimension(300, 300));
+	    window.setSize(new Dimension(1100, 600));
 	    window.setVisible(true);
 	    
 	}	
@@ -134,9 +134,8 @@ public class GUI implements ABInterface
 			System.out.println( "Invalid file: " + ex.getMessage());
 		}
 		
-		System.out.println("path : " + path);
 		try {
-			AddressBookGUI bk = new AddressBookGUI(this);
+			AddressBook bk = new AddressBook();
 			bk.loadFile(path, FileType.valueOf(fc.getFileFilter().getDescription().toUpperCase()));
 			addAddressBook(bk);
 		}
@@ -146,7 +145,7 @@ public class GUI implements ABInterface
 	}
 	
 	public void saveFile(JFrame jf) {
-		AddressBook bk = getCurrentBook();
+		AddressBook bk = getActiveBook();
 		final FileChooser fc = new FileChooser();
 		File save = null;
 		String path = null;
@@ -154,8 +153,6 @@ public class GUI implements ABInterface
 		fc.showSaveDialog(jf);
 		save = fc.getSelectedFile();
 		String ext = fc.getFileFilter().getDescription();
-		
-		System.out.println("FILEFILTER: " + ext);
 		
 		try {
 			path = save.getCanonicalPath();
@@ -169,14 +166,23 @@ public class GUI implements ABInterface
 		
 	}
 	
-	public void addAddressBook(AddressBookGUI book) {
-		books.add(book);
-	    JScrollPane scrollPane = new JScrollPane(book.table);
-	    mainPanel.addTab("New Address Book", scrollPane);
+	public void addAddressBook() {
+		addAddressBook(new AddressBook());
 	}
 	
-	public AddressBook getCurrentBook() {
-		return books.get(currentBook);
+	public void addAddressBook(AddressBook book) {
+		//books.add(book);
+	    AddressBookGUI bookGUI = new AddressBookGUI(this, book);
+	    //mainPanel.addMouseListener(new SwitchAddressBookListener(this, book));
+	    mainPanel.addTab("New Address Book", bookGUI);
+	}
+
+	public AddressBook getActiveBook() {
+		return activeBook.getBook();
+	}
+	
+	public AddressBookGUI getActiveBookGui() {
+		return activeBook;
 	}
 
 	public JFrame getMainWindow() {
@@ -188,6 +194,19 @@ public class GUI implements ABInterface
 	}
 
 	public DataEntry getEntryAtRow(int rowAtPoint) {
-		return getCurrentBook().getEntries().get(rowAtPoint);
+		return getActiveBook().getEntries().get(rowAtPoint);
+	}
+	
+	public void setActiveBookGui(AddressBookGUI book) {
+		this.activeBook = book;
+	}
+
+	public void update() {
+		activeBook.updateElements();
+	}
+	
+	public void removeCurrentEntry() {
+		activeBook.removeDataEntry(sidePanel.getCurrentEntry());
+		setCurrentEntry(null);
 	}
 }
