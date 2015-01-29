@@ -14,6 +14,7 @@ import cis.ramrodcs.addressbook.interfaces.GUI;
 import cis.ramrodcs.addressbook.interfaces.ViewAddress;
 import cis.ramrodcs.addressbook.interfaces.listeners.LoadAddressBookListener;
 import cis.ramrodcs.addressbook.interfaces.listeners.NewAddressBookListener;
+import cis.ramrodcs.addressbook.interfaces.listeners.PrintUPSListener;
 import cis.ramrodcs.addressbook.interfaces.listeners.QuitListener;
 import cis.ramrodcs.addressbook.interfaces.listeners.SaveAddressBookListener;
 
@@ -22,17 +23,14 @@ public class HMUMenuBar {
 	JMenuBar menuBar;
 	
 	public HMUMenuBar(GUI gui) {
-	    JButton addButton = new JButton("Add Address");
-	    JButton view_oneButton = new JButton("View An Address");
-	    JButton view_allButton = new JButton("View All Addresses");
 	    JButton quitButton = new JButton("Quit Program");
 	    JButton searchButton = new JButton("Search");
 	    JTextField searchField = new JTextField("Search");
 	    
 
 	    //Where the GUI is created:
-	    JMenu menu, newSubmenu;
-	    JMenuItem newAddress, newBook, newField, openBook, importBook, exportBook, viewAddress, viewAddresses, saveBook, quitBook;
+	    JMenu menu;
+	    JMenuItem newBook, openBook, importBook, saveBook, quitBook, printUPS;
 	    
 	    //Create the menu bar.
 	    menuBar = new JMenuBar();
@@ -55,6 +53,9 @@ public class HMUMenuBar {
 	    
 	    importBook = new JMenuItem("Import");
 	    menu.add(importBook);
+	    
+	    printUPS = new JMenuItem("Print UPS Format");
+	    menu.add(printUPS);
 	    
 	    menu.addSeparator();
 	    
@@ -103,6 +104,7 @@ public class HMUMenuBar {
 	    saveBook.addActionListener(new SaveAddressBookListener(gui));
 	    quitBook.addActionListener(new QuitListener(gui));
 	    searchButton.addActionListener(actionListener);
+	    printUPS.addActionListener(new PrintUPSListener(gui));
 	}
 	
 	public JMenuBar getMenuBar() {

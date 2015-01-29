@@ -35,7 +35,8 @@ public class DataEntry {
 	 * a field named <code>key</code>, then this function returns null.
 	 */
 	public String getField(String key) {
-		return fields.get(key.toLowerCase());
+		String rtn = fields.get(key.toLowerCase());
+		return rtn == null ? "" : rtn;
 	}
 
 	/**

@@ -192,6 +192,10 @@ public class GUI implements ABInterface
 	public void setCurrentEntry(DataEntry entry) {
 		sidePanel.setCurrentEntry(entry);
 	}
+	
+	public DataEntry getCurrentEntry() {
+		return sidePanel.getCurrentEntry();
+	}
 
 	public DataEntry getEntryAtRow(int rowAtPoint) {
 		return getActiveBook().getEntries().get(rowAtPoint);

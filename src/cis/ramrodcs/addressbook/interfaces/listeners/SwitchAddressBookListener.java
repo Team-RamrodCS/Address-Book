@@ -19,7 +19,9 @@ public class SwitchAddressBookListener implements ChangeListener {
 	public void stateChanged(ChangeEvent event) {
 		HMUMainPanel panel = (HMUMainPanel) event.getSource();
 		AddressBookGUI book = (AddressBookGUI) panel.getSelectedComponent();
+		book.table.clearSelection();
 		gui.setActiveBookGui(book);
+		gui.setCurrentEntry(null);
 	}
 
 

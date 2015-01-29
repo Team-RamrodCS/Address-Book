@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -20,18 +22,21 @@ import javax.swing.border.EtchedBorder;
 import cis.ramrodcs.addressbook.DataEntry;
 import cis.ramrodcs.addressbook.interfaces.GUI;
 import cis.ramrodcs.addressbook.interfaces.listeners.AddEntryListener;
+import cis.ramrodcs.addressbook.interfaces.listeners.CustomDataKeyModificationListener;
 import cis.ramrodcs.addressbook.interfaces.listeners.EntryModificationListener;
 import cis.ramrodcs.addressbook.interfaces.listeners.RemoveEntryListener;
 
 public class HMUDetailViewer extends JPanel{
 
 	private DataEntry currentEntry = null;
-	JPanel detailView = null;
+	JPanel details = null;
+	JPanel detailPanel = null;
+	JButton addFieldButton = null;
 	GUI gui = null;
 	
 	public HMUDetailViewer(GUI gui) {
 	    super.setOpaque(true);
-	    super.setLayout(new GridLayout());
+	    super.setLayout(new GridLayout(0, 1));
 	    this.gui = gui;
 	    // Create Header
 	    JPanel header = new JPanel();
@@ -62,46 +67,61 @@ public class HMUDetailViewer extends JPanel{
 	    header.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 	    
 	    // Create Info Box
-	    detailView = new JPanel();
-	    detailView.setLayout(new GridLayout(0, 2, 5, 5));
-	    detailView.setAlignmentY(Component.TOP_ALIGNMENT);
+	    detailPanel = new JPanel(new BorderLayout());
+	    details = new JPanel();
+	    details.setLayout(new GridLayout(0, 2, 5, 5));
+	    details.setAlignmentY(Component.TOP_ALIGNMENT);
 	    //detailView.setLayout(new BoxLayout(detailView, BoxLayout.PAGE_AXIS	));
 	    //info.setLayout(new GridLayout(0, 1));
 	    
+		addFieldButton = new JButton("Add custom field value");
+		addFieldButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JTextField keyField = new JTextField("Key");
+				keyField.getDocument().addDocumentListener(new CustomDataKeyModificationListener(gui));
+				details.add(new JTextField("Key"));
+				details.add(new JTextField("Value"));
+				details.revalidate();
+			}
+			
+		});
 	    // Put Elements together
-	    JPanel total = new JPanel();
-	    total.setLayout(new BorderLayout());
-	    total.add(header, BorderLayout.NORTH);
-	    total.add(detailView, BorderLayout.CENTER);
-	    super.add(total);
+	    detailPanel.add(header, BorderLayout.NORTH);
+	    detailPanel.add(details, BorderLayout.CENTER);
+	    detailPanel.add(addFieldButton, BorderLayout.SOUTH);
+	    super.add(detailPanel);
+	    
+
 	}
 	
 	private void updateElements() {
-		detailView.removeAll();
+		details.removeAll();
 		if(currentEntry == null) {
 			return;
 		}
 
 		for(String key : currentEntry.getDefaultEntries().keySet()) {
-			detailView.add(new JLabel(key + ":"));
+			details.add(new JLabel(key + ":"));
 			JPanel entryPanel = new JPanel(new BorderLayout());
-			JTextField entryField = new JTextField(20);
-			entryField.setText(currentEntry.getField(key));
+			JTextField entryField = new JTextField(currentEntry.getField(key));
 			entryField.getDocument().addDocumentListener(new EntryModificationListener(currentEntry, key, entryField, gui));
-			entryPanel.add(entryField, BorderLayout.WEST);
-			entryField.setMaximumSize(new Dimension(entryPanel.getWidth(), entryField.getHeight()));
-			detailView.add(entryPanel);
+			entryPanel.add(entryField);
+			details.add(entryPanel);
 		}
 	
-		detailView.add(new JSeparator());
-		detailView.add(new JSeparator());
+		details.add(new JSeparator());
+		details.add(new JSeparator());
 			
 		for(String key : currentEntry.getCustomEntries().keySet()) {
-			detailView.add(new JLabel(key + ":"));
+			details.add(new JLabel(key + ":"));
 			JTextField entryField = new JTextField(currentEntry.getField(key));
 			entryField.setMaximumSize(entryField.getPreferredSize());
-			detailView.add(entryField);
+			details.add(entryField);
 		}
+		//detailView.add(addFieldButton);
+		
 		//detailView.add(Box.createGlue());
 	}
 	
