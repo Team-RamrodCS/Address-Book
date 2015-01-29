@@ -11,7 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 
 import cis.ramrodcs.addressbook.interfaces.GUI;
-import cis.ramrodcs.addressbook.interfaces.ViewAddress;
+import cis.ramrodcs.addressbook.interfaces.listeners.ImportAddressBookListener;
 import cis.ramrodcs.addressbook.interfaces.listeners.LoadAddressBookListener;
 import cis.ramrodcs.addressbook.interfaces.listeners.NewAddressBookListener;
 import cis.ramrodcs.addressbook.interfaces.listeners.QuitListener;
@@ -80,13 +80,7 @@ public class HMUMenuBar {
 		    public void actionPerformed(ActionEvent e) 
 		    {
 		    	
-		    	
-		    	if (e.getSource() == importBook)
-		    	{
-		    		System.out.println("Import book.");
-		    	}
-		    	
-		    	else if (e.getSource() == searchButton)
+		    	if (e.getSource() == searchButton)
 		    	{
 		    		String searched = searchField.getText();
 		    		System.out.println(searched);
@@ -95,11 +89,9 @@ public class HMUMenuBar {
 	    };	    
 	    // Set buttons and menu items to action listener
 	    quitButton.addActionListener(actionListener);
-
-	    
 	    newBook.addActionListener(new NewAddressBookListener(gui));
 	    openBook.addActionListener(new LoadAddressBookListener(gui));
-	    importBook.addActionListener(actionListener);
+	    importBook.addActionListener(new ImportAddressBookListener(gui));
 	    saveBook.addActionListener(new SaveAddressBookListener(gui));
 	    quitBook.addActionListener(new QuitListener(gui));
 	    searchButton.addActionListener(actionListener);

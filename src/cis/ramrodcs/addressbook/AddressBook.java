@@ -231,4 +231,22 @@ public class AddressBook {
 			entries.remove(entry);
 		}
 	}
+	
+	public boolean containsEntry(DataEntry entry) {
+		boolean contains = false;
+		int bool = 0;
+		
+		for (DataEntry existing : entries) {
+			DataEntryComparator comp = new DataEntryComparator("first name");
+			bool = comp.compare(existing, entry);
+			
+			if(bool == 0) {
+				contains = true;
+				break;
+			}
+		}
+		
+		return contains;
+	}
+	
 }

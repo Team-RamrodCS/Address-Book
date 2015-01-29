@@ -55,9 +55,14 @@ public class HMUReader extends FileReader {
 				/* Replace quotations and split for name:val pieces */
 				String str = pairs[i].replace("\"", "");
 				piece = str.split(delim2);
+				
 				entry.addField(piece[0], piece[1]);
 			}
-			book.addDataEntry(entry);
+			
+			// Check to see if the entry already exists
+			if (!book.containsEntry(entry)) {
+				book.addDataEntry(entry);
+			}
 		}
 		scanner.close();
 	}
