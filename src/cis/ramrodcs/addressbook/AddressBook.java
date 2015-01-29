@@ -97,7 +97,9 @@ public class AddressBook {
 		saveFile = fileStr;
 	}
 	
-	
+	/**
+	 * Print the contents of the address book to terminal (for testing purposes only
+	 */
 	public void printAllEntries() {
 		for (DataEntry contact : this.getEntries())
 		{
@@ -223,4 +225,5 @@ public class AddressBook {
 			}
 		}
 	}
+	
 }
