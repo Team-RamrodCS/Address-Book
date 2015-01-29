@@ -50,10 +50,19 @@ public class DataEntry {
 		fields.put(key.trim().toLowerCase(), value);
 	}
 	
+	/**
+	 * Return the map representation of this data entry
+	 * @return fields list for the data entry
+	 */
 	public Map<String,String> getEntries() {
 		return fields;
 	}
 	
+	/**
+	 * Return the map representation of this data entry's user-defined fields
+	 * 
+	 * @return fields list for user defined fields associated with this data entry
+	 */
 	public Map<String, String> getCustomEntries() {
 		Map<String, String> rtn = new HashMap<String, String>();
 		for(String key : fields.keySet()) {
@@ -64,6 +73,11 @@ public class DataEntry {
 		return rtn;
 	}
 	
+	/**
+	 * Return the map representation of this data entry's default fields
+	 * 
+	 * @return fields list for default fields associated with this data entry
+	 */
 	public Map<String, String> getDefaultEntries() {
 		Map<String, String> rtn = new LinkedHashMap<String, String>();
 		for(String key : defaultEntries) {

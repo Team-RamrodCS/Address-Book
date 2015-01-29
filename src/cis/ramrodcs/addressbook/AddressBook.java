@@ -201,7 +201,6 @@ public class AddressBook {
 	
 	/**
 	 * Write contents of address book to file
-	 * TODO: If file does not exist, prompt to create/save to new file 
 	 *  
 	 * @param fileStr the file to save this Address Book to
 	 */
@@ -211,10 +210,20 @@ public class AddressBook {
 	}
 
 	
+	/**
+	 * Sort through address book entries, filtering by the given field
+	 * 
+	 * @param fileStr the field to be used during sort comparisons
+	 */
 	public void sortByField(String fileStr) {
 		entries.sort(new DataEntryComparator(fileStr));
 	}
 	
+	/**
+	 * Populate an array list of data entries associated with the search field
+	 * 
+	 * @param str value to search by
+	 */
 	public void search(String str) {
 		for (DataEntry entry : entries) {
 			Map<String,String> map = entry.getEntries();
@@ -226,12 +235,23 @@ public class AddressBook {
 		}
 	}
 
+	/**
+	 * Remove the data entry if it exists in this address book
+	 * 
+	 * @param entry to be removed
+	 */
 	public void removeDataEntry(DataEntry entry) {
 		if(entries.contains(entry)) {
 			entries.remove(entry);
 		}
 	}
 	
+	/**
+	 * Check if the address book contains this entry
+	 * 
+	 * @param entry to be checked
+	 * @return boolean reflecting whether entry is contained
+	 */
 	public boolean containsEntry(DataEntry entry) {
 		boolean contains = false;
 		int bool = 0;
