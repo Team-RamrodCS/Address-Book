@@ -61,7 +61,10 @@ public class UPSReader extends FileReader {
 			entry.addField("last name", recip[1]);
 			entry.addField("phone number", number);
 			
-			book.addDataEntry(entry);
+			// Check to see if the entry already exists
+			if (!book.containsEntry(entry)) {
+				book.addDataEntry(entry);
+			}
 		}
 		scanner.close();
 	}

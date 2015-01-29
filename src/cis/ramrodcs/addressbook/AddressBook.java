@@ -97,7 +97,9 @@ public class AddressBook {
 		saveFile = fileStr;
 	}
 	
-	
+	/**
+	 * Print the contents of the address book to terminal (for testing purposes only
+	 */
 	public void printAllEntries() {
 		for (DataEntry contact : this.getEntries())
 		{
@@ -229,4 +231,22 @@ public class AddressBook {
 			entries.remove(entry);
 		}
 	}
+	
+	public boolean containsEntry(DataEntry entry) {
+		boolean contains = false;
+		int bool = 0;
+		
+		for (DataEntry existing : entries) {
+			DataEntryComparator comp = new DataEntryComparator("first name");
+			bool = comp.compare(existing, entry);
+			
+			if(bool == 0) {
+				contains = true;
+				break;
+			}
+		}
+		
+		return contains;
+	}
+	
 }

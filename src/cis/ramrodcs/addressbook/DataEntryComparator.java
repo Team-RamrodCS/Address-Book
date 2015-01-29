@@ -21,12 +21,12 @@ public class DataEntryComparator implements Comparator<DataEntry> {
 		int ret = 0;
 		
 		if (val1.equals(val2)) {
-			val1 = d1.getField("firstname");
-			val2 = d2.getField("firstname");
+			val1 = d1.getField("first name");
+			val2 = d2.getField("first name");
 			
 			if (val2.equals(val2)) {
-				val1 = d1.getField("lastname");
-				val2 = d2.getField("lastname");
+				val1 = d1.getField("last name");
+				val2 = d2.getField("last name");
 				
 				ret = val1.compareTo(val2);
 			}

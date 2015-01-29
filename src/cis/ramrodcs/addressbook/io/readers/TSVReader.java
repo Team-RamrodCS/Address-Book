@@ -63,7 +63,11 @@ public class TSVReader extends FileReader {
 				}
 				entry.addField(keys[i], values[i]);
 			}
-			book.addDataEntry(entry);
+			
+			// Check to see if the entry already exists
+			if (!book.containsEntry(entry)) {
+				book.addDataEntry(entry);
+			}
 		}
 		scanner.close();
 	}

@@ -176,6 +176,35 @@ public class GUI implements ABInterface
 	    //mainPanel.addMouseListener(new SwitchAddressBookListener(this, book));
 	    mainPanel.addTab("New Address Book", bookGUI);
 	}
+	
+	public void importAddressBook(JFrame jf) {
+		final FileChooser fc = new FileChooser();
+		File open = null;
+		String path = null;
+		
+		fc.showOpenDialog(jf);
+		open = fc.getSelectedFile();
+		
+		if(open == null) {
+			return;
+		}
+		
+		try {
+			path = open.getCanonicalPath();
+		}
+		catch (IOException ex) {
+			System.out.println( "Invalid file: " + ex.getMessage());
+		}
+		
+		try {
+			AddressBook bk = getActiveBook();
+			bk.loadFile(path, FileType.valueOf(fc.getFileFilter().getDescription().toUpperCase()));
+			update();
+		}
+		catch (FileNotFoundException ex) {
+			System.out.println(" File not found: " + ex.getMessage());
+		}
+	}
 
 	public AddressBook getActiveBook() {
 		return activeBook.getBook();
