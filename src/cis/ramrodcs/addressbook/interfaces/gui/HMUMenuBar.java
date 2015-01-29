@@ -10,7 +10,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 
-import cis.ramrodcs.addressbook.interfaces.AddAddress;
 import cis.ramrodcs.addressbook.interfaces.GUI;
 import cis.ramrodcs.addressbook.interfaces.ViewAddress;
 import cis.ramrodcs.addressbook.interfaces.listeners.LoadAddressBookListener;

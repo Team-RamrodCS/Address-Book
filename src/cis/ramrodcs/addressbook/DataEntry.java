@@ -1,6 +1,8 @@
 package cis.ramrodcs.addressbook;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,9 +18,14 @@ public class DataEntry {
 
 	public final static String defaultEntries[] = {"first name", "last name", "street address", "city", "state", "zip", "phone number"};
 
+	private AddressBook book;
 	private Map<String, String> fields = new HashMap<String, String>(); 
 	// TODO look into other types of maps for more efficient sorting
 
+	public DataEntry(AddressBook book) {
+		this.book = book;
+	}
+	
 	/**
 	 * Returns the value of a field in this entry.
 	 * 
@@ -40,10 +47,28 @@ public class DataEntry {
 		if(value.equals("") || value == null) {
 			return;
 		}
-		fields.put(key.toLowerCase(), value);
+		fields.put(key.trim().toLowerCase(), value);
 	}
 	
 	public Map<String,String> getEntries() {
 		return fields;
+	}
+	
+	public Map<String, String> getCustomEntries() {
+		Map<String, String> rtn = new HashMap<String, String>();
+		for(String key : fields.keySet()) {
+			if(!Arrays.asList(defaultEntries).contains(key)) {
+				rtn.put(key, fields.get(key));
+			}
+		}
+		return rtn;
+	}
+	
+	public Map<String, String> getDefaultEntries() {
+		Map<String, String> rtn = new LinkedHashMap<String, String>();
+		for(String key : defaultEntries) {
+			rtn.put(key, fields.get(key));
+		}
+		return rtn;
 	}
 }
